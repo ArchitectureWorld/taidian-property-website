@@ -35,10 +35,13 @@ class ShowcaseAcceptanceTests(unittest.TestCase):
         self.assertIn("annotation-grid", self.source)
         self.assertIn("tech-line", self.source)
         self.assertIn("assets/community.webp", self.source)
-        self.assertIn("position: sticky", self.source)
+        self.assertTrue((ROOT / "styles.css").exists())
+        self.assertIn("position: sticky", (ROOT / "styles.css").read_text(encoding="utf-8"))
+        self.assertTrue((ROOT / "script.js").exists())
 
     def test_accessible_motion_fallback(self):
-        self.assertIn("prefers-reduced-motion", self.source)
+        css = (ROOT / "styles.css").read_text(encoding="utf-8")
+        self.assertIn("prefers-reduced-motion", css)
         self.assertRegex(self.source, r'<main[^>]*>')
         self.assertIn("aria-label", self.source)
 
