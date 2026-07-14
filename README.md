@@ -8,8 +8,8 @@
 
 ## 当前技术形态
 
-- 单页静态 HTML；
-- CSS 和 JavaScript 均内嵌；
+- 静态 HTML、CSS 与原生 JavaScript；
+- 无前端框架和构建依赖；
 - 核心图片存放于本地 `assets/` 目录，不依赖外部图床；
 - 无需 Node.js、数据库或构建命令；
 - 已提供 `vercel.json`，可直接导入 Vercel；
