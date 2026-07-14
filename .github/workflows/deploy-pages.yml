@@ -1,5 +1,6 @@
 name: Deploy GitHub Pages
 
+# Re-triggered after the repository was made public on 2026-07-14.
 on:
   push:
     branches: [main]
