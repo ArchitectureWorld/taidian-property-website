@@ -1,0 +1,39 @@
+{
+  "brand": {
+    "shortName": "泰典物业",
+    "legalName": "待提供公司法定全称",
+    "foundedYear": null,
+    "tagline": "深耕住宅物业，尤其懂老旧社区",
+    "logoFile": "待提供"
+  },
+  "contact": {
+    "phone": "待提供",
+    "email": "待提供",
+    "address": "待提供",
+    "serviceHours": "待提供",
+    "wechatQrFile": "待提供"
+  },
+  "metrics": {
+    "yearsOfExperience": null,
+    "activeCommunities": null,
+    "householdsServed": null,
+    "employees": null,
+    "oldCommunityProjects": null,
+    "satisfactionRate": null
+  },
+  "projects": [
+    {
+      "name": "待提供",
+      "location": "待提供",
+      "type": "老旧小区",
+      "entryYear": null,
+      "serviceYears": null,
+      "buildings": null,
+      "households": null,
+      "challenge": "待提供",
+      "actions": ["待提供"],
+      "results": ["待提供"],
+      "imageFiles": []
+    }
+  ]
+}
