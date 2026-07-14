@@ -1,13 +1,14 @@
 name: Deploy GitHub Pages
 
-# Re-triggered after the repository was made public on 2026-07-14.
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.github/pages-status.json'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -36,3 +37,29 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify published site
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if curl --fail --silent --show-error --location "$PAGE_URL" --output /tmp/page.html \
+              && grep --quiet '泰典物业' /tmp/page.html; then
+              verified_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+              mkdir -p .github
+              printf '{\n  "status": "verified",\n  "url": "%s",\n  "verifiedAt": "%s",\n  "sourceCommit": "%s"\n}\n' \
+                "$PAGE_URL" "$verified_at" "$GITHUB_SHA" > .github/pages-status.json
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Published page did not return the expected 泰典物业 content.' >&2
+          exit 1
+
+      - name: Record verification result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/pages-status.json
+          git commit -m 'chore: record GitHub Pages verification [skip ci]'
+          git push
