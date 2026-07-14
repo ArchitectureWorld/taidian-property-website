@@ -4,16 +4,15 @@
 
 ## 推荐流程
 
-1. 在 GitHub 创建私有仓库 `taidian-property-website`；
-2. 将本地 `main` 分支推送到该仓库；
-3. 在 Vercel 控制台选择 **New Project**；
-4. 导入该 GitHub 仓库；
-5. Framework Preset 选择 **Other**；
-6. Root Directory 保持仓库根目录；
-7. 不设置 Build Command；
-8. 不设置环境变量；
-9. 点击 Deploy；
-10. 发布成功后再绑定自定义域名。
+1. 在 Vercel 控制台选择 **New Project**；
+2. 导入 GitHub 私有仓库 `ArchitectureWorld/taidian-property-website`；
+3. Framework Preset 选择 **Other**；
+4. Root Directory 保持仓库根目录；
+5. 不设置 Build Command；
+6. 不设置 Output Directory；
+7. 不设置环境变量；
+8. 点击 Deploy；
+9. 发布成功后再绑定自定义域名。
 
 ## Git 更新后的发布方式
 
