@@ -1,0 +1,557 @@
+.value {
+  padding: var(--section-space) 0;
+  background: var(--paper-bright);
+}
+
+.section-heading {
+  display: grid;
+  grid-template-columns: .48fr 1.2fr .72fr;
+  gap: clamp(34px, 5vw, 72px);
+  align-items: end;
+}
+
+.section-sequence {
+  margin: 26px 0 0;
+  color: #9a9f9a;
+  font-size: 11px;
+  letter-spacing: .12em;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: clamp(50px, 6.8vw, 98px);
+  line-height: 1.02;
+}
+
+.section-heading h2 em {
+  color: var(--forest);
+  font-style: normal;
+}
+
+.section-heading > p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.value-steps {
+  margin-top: clamp(76px, 9vw, 132px);
+  border-top: 1px solid var(--line);
+}
+
+.value-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px .82fr 1fr 100px;
+  gap: clamp(20px, 4vw, 58px);
+  align-items: start;
+  padding: clamp(34px, 4.6vw, 62px) 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left .4s var(--ease), background .4s ease;
+}
+
+.value-step::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 calc(var(--edge) * -1);
+  background: rgba(222, 210, 191, .28);
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+.value-step:hover {
+  padding-left: 16px;
+}
+
+.value-step:hover::before {
+  opacity: 1;
+}
+
+.step-no {
+  color: var(--bronze);
+  font-size: 12px;
+}
+
+.value-step h3 {
+  margin: -8px 0 0;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: clamp(28px, 3.2vw, 46px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.value-step p {
+  max-width: 540px;
+  margin: -4px 0 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.step-tag {
+  justify-self: end;
+  color: #969c97;
+  font-size: 9px;
+  letter-spacing: .14em;
+  writing-mode: vertical-rl;
+}
+
+.community {
+  padding: var(--section-space) 0;
+  background:
+    linear-gradient(112deg, rgba(255, 253, 248, .22), transparent 44%),
+    var(--paper-deep);
+}
+
+.community-inner {
+  display: grid;
+  grid-template-columns: 1fr .88fr;
+  gap: clamp(64px, 9vw, 138px);
+  align-items: start;
+}
+
+.community-manifesto h2 {
+  max-width: 780px;
+  margin: 34px 0 0;
+  font-size: clamp(50px, 5.7vw, 82px);
+  line-height: 1.02;
+}
+
+.community-lead {
+  max-width: 620px;
+  margin: 34px 0 0;
+  color: #4f574f;
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.community-manifesto blockquote {
+  max-width: 600px;
+  margin: 72px 0 0;
+  padding: 28px 0 0 34px;
+  border-top: 1px solid rgba(23, 32, 28, .24);
+  border-left: 4px solid var(--forest);
+}
+
+.community-manifesto blockquote p {
+  margin: 0;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: clamp(21px, 2.2vw, 31px);
+  line-height: 1.6;
+}
+
+.service-ledger {
+  margin-top: 32px;
+  border-top: 1px solid rgba(23, 32, 28, .28);
+}
+
+.service-ledger article {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 22px;
+  padding: 28px 0 30px;
+  border-bottom: 1px solid rgba(23, 32, 28, .22);
+}
+
+.service-ledger article > span {
+  color: var(--bronze);
+  font: 11px/1 Georgia, serif;
+}
+
+.service-ledger h3 {
+  margin: -4px 0 9px;
+  font-size: 21px;
+  font-weight: 650;
+}
+
+.service-ledger p {
+  margin: 0;
+  color: #535b54;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.cases {
+  padding: var(--section-space) 0;
+  background: var(--paper-bright);
+}
+
+.cases-heading {
+  display: grid;
+  grid-template-columns: 1fr .58fr;
+  gap: 60px;
+  align-items: end;
+}
+
+.cases-heading h2 {
+  margin: 30px 0 0;
+  font-size: clamp(48px, 6.3vw, 88px);
+  line-height: 1.04;
+}
+
+.cases-heading > p {
+  max-width: 500px;
+  margin: 0 0 8px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: 1.35fr .65fr;
+  grid-template-rows: repeat(2, minmax(280px, auto));
+  gap: 18px;
+  margin-top: clamp(62px, 8vw, 112px);
+}
+
+.case-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.case-card--featured {
+  min-height: 640px;
+  grid-row: 1 / 3;
+  color: var(--white);
+  background: var(--forest-deep);
+}
+
+.case-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.case-media img {
+  position: absolute;
+  max-width: none;
+  filter: saturate(.68) contrast(1.12) sepia(.08);
+  transition: transform 1.2s var(--ease), filter .5s ease;
+}
+
+.case-media--featured img {
+  top: -7%;
+  right: -8%;
+  width: 142%;
+  height: 132%;
+  object-fit: cover;
+  object-position: 68% 8%;
+}
+
+.case-card--featured:hover .case-media img {
+  transform: scale(1.025);
+  filter: saturate(.8) contrast(1.08);
+}
+
+.case-media__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(13, 39, 33, .04) 20%, rgba(13, 39, 33, .93) 88%),
+    linear-gradient(90deg, rgba(13, 39, 33, .4), transparent 58%);
+}
+
+.case-content {
+  position: relative;
+  z-index: 2;
+}
+
+.case-card--featured .case-content {
+  position: absolute;
+  right: clamp(28px, 4vw, 58px);
+  bottom: clamp(30px, 4.4vw, 62px);
+  left: clamp(28px, 4vw, 58px);
+}
+
+.case-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: rgba(255, 253, 248, .65);
+  font-size: 10px;
+  letter-spacing: .13em;
+}
+
+.case-card h3 {
+  margin: 26px 0 16px;
+  font-family: "Songti SC", "STSong", serif;
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+
+.case-card--featured h3 {
+  max-width: 700px;
+  font-size: clamp(35px, 4.2vw, 62px);
+  line-height: 1.12;
+}
+
+.case-card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.case-card--featured p {
+  color: rgba(255, 253, 248, .68);
+}
+
+.case-card--compact {
+  min-height: 300px;
+}
+
+.case-card--compact .case-content {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(28px, 3.4vw, 44px);
+}
+
+.case-card--compact h3 {
+  margin-top: auto;
+  font-size: clamp(27px, 3vw, 40px);
+  line-height: 1.18;
+}
+
+.case-card--sand {
+  background: var(--paper-deep);
+}
+
+.case-card--sand .case-meta {
+  color: #736d63;
+}
+
+.case-card--sand p {
+  color: #5c5f59;
+}
+
+.case-arrow {
+  position: absolute;
+  top: 28px;
+  right: 30px;
+  font-size: 26px;
+  font-weight: 300;
+}
+
+.case-card--forest {
+  color: var(--white);
+  background: var(--forest);
+}
+
+.case-card--forest .case-content {
+  width: 70%;
+}
+
+.case-card--forest .case-meta,
+.case-card--forest p {
+  color: rgba(255, 253, 248, .62);
+}
+
+.case-thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 34%;
+  overflow: hidden;
+  opacity: .48;
+}
+
+.case-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--forest), transparent 65%);
+}
+
+.case-thumb img {
+  position: absolute;
+  top: -4%;
+  right: -80%;
+  width: auto;
+  max-width: none;
+  height: 130%;
+  filter: grayscale(.3) saturate(.5) contrast(1.1);
+}
+
+.cases-disclaimer {
+  margin: 24px 0 0;
+  color: #888e89;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.contact {
+  padding: var(--section-space) 0 38px;
+  color: var(--white);
+  overflow: clip;
+  background:
+    radial-gradient(circle at 80% 15%, rgba(208, 174, 134, .16), transparent 30%),
+    var(--forest-deep);
+}
+
+.contact::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -12vw;
+  bottom: 10%;
+  width: 38vw;
+  aspect-ratio: 1;
+  border: 1px solid rgba(208, 174, 134, .16);
+  border-radius: 50%;
+}
+
+.contact-inner {
+  display: grid;
+  grid-template-columns: 1.18fr .82fr;
+  gap: clamp(60px, 10vw, 150px);
+  align-items: end;
+}
+
+.contact-heading h2 {
+  margin: 36px 0 0;
+  font-size: clamp(56px, 7.2vw, 104px);
+  line-height: 1.02;
+}
+
+.contact-heading > p:last-child {
+  max-width: 520px;
+  margin: 32px 0 0;
+  color: rgba(255, 253, 248, .62);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.contact-card {
+  padding: clamp(34px, 4vw, 52px);
+  color: var(--ink);
+  background: var(--paper-bright);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .2);
+}
+
+.contact-card__label {
+  color: var(--bronze);
+  font-size: 11px;
+  letter-spacing: .14em;
+}
+
+.contact-phone {
+  display: block;
+  margin-top: 20px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(30px, 3.5vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -.025em;
+}
+
+.contact-card dl {
+  margin: 38px 0 32px;
+  border-top: 1px solid var(--line);
+}
+
+.contact-card dl > div {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact-card dt {
+  color: #868c87;
+  font-size: 11px;
+}
+
+.contact-card dd {
+  margin: 0;
+  font-size: 13px;
+}
+
+.button--paper {
+  width: 100%;
+  color: var(--white);
+  background: var(--forest);
+}
+
+.demo-notice {
+  margin: 18px 0 0;
+  color: #8b908c;
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+.site-footer {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 36px;
+  margin-top: clamp(92px, 11vw, 154px);
+  padding-top: 30px;
+  border-top: 1px solid var(--line-light);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark--footer {
+  color: var(--forest-deep);
+  border-color: rgba(208, 174, 134, .65);
+  background: var(--bronze-soft);
+}
+
+.footer-brand div {
+  display: grid;
+  gap: 5px;
+}
+
+.footer-brand strong {
+  font-size: 15px;
+  letter-spacing: .08em;
+}
+
+.footer-brand small {
+  color: rgba(255, 253, 248, .48);
+  font-size: 10px;
+}
+
+.footer-meta {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+  color: rgba(255, 253, 248, .42);
+  font-size: 10px;
+}
+
+.mobile-contact {
+  position: fixed;
+  z-index: 70;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  left: 16px;
+  min-height: 54px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  color: var(--white);
+  background: var(--forest);
+  box-shadow: 0 14px 38px rgba(13, 39, 33, .28);
+}
+
+.mobile-contact span {
+  color: rgba(255, 253, 248, .62);
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+.mobile-contact strong {
+  font-size: 14px;
+}
