@@ -12,7 +12,7 @@
 
 .section-sequence {
   margin: 26px 0 0;
-  color: #9a9f9a;
+  color: var(--ink-soft);
   font-size: 11px;
   letter-spacing: .12em;
 }
@@ -92,7 +92,7 @@
 
 .step-tag {
   justify-self: end;
-  color: #969c97;
+  color: var(--ink-soft);
   font-size: 9px;
   letter-spacing: .14em;
   writing-mode: vertical-rl;
@@ -322,11 +322,11 @@
 }
 
 .case-card--sand .case-meta {
-  color: #736d63;
+  color: #544f48;
 }
 
 .case-card--sand p {
-  color: #5c5f59;
+  color: #535b54;
 }
 
 .case-arrow {
@@ -380,7 +380,7 @@
 
 .cases-disclaimer {
   margin: 24px 0 0;
-  color: #888e89;
+  color: var(--ink-soft);
   font-size: 11px;
   line-height: 1.7;
 }
@@ -463,7 +463,7 @@
 }
 
 .contact-card dt {
-  color: #868c87;
+  color: var(--ink-soft);
   font-size: 11px;
 }
 
@@ -480,7 +480,7 @@
 
 .demo-notice {
   margin: 18px 0 0;
-  color: #8b908c;
+  color: var(--ink-soft);
   font-size: 10px;
   line-height: 1.65;
 }
@@ -526,7 +526,7 @@
   display: grid;
   justify-items: end;
   gap: 8px;
-  color: rgba(255, 253, 248, .42);
+  color: rgba(255, 253, 248, .58);
   font-size: 10px;
 }
 
