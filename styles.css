@@ -5,7 +5,7 @@
   --forest: #173c33;
   --forest-deep: #0d2721;
   --forest-soft: #2b5348;
-  --bronze: #a87545;
+  --bronze: #7d512d;
   --bronze-soft: #d0ae86;
   --ink: #17201c;
   --ink-soft: #5b635d;
@@ -38,6 +38,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
   overflow-x: clip;
 }
 
@@ -71,8 +72,9 @@ img {
 }
 
 :focus-visible {
-  outline: 3px solid var(--bronze);
-  outline-offset: 4px;
+  outline: 3px solid var(--paper-bright);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--forest-deep);
 }
 
 .skip-link {
@@ -161,7 +163,7 @@ img {
 }
 
 .brand-copy small {
-  color: #778079;
+  color: var(--ink-soft);
   font: 9px/1.2 Georgia, "Times New Roman", serif;
   letter-spacing: .17em;
 }
@@ -225,7 +227,7 @@ img {
 }
 
 .nav-phone span {
-  color: #7b827d;
+  color: var(--ink-soft);
   font-size: 10px;
   letter-spacing: .09em;
 }
@@ -460,7 +462,7 @@ body.menu-open .nav-scrim {
   flex-wrap: wrap;
   gap: 18px;
   margin-top: 38px;
-  color: #737b75;
+  color: var(--ink-soft);
   font-size: 11px;
   letter-spacing: .08em;
 }
@@ -585,7 +587,7 @@ body.menu-open .nav-scrim {
   right: 0;
   bottom: 8px;
   width: 38%;
-  color: #737b75;
+  color: var(--ink-soft);
   font-size: 11px;
   line-height: 1.65;
 }
