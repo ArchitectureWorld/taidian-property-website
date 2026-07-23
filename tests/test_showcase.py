@@ -5,7 +5,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML = ROOT / "index.html"
-CSS = ROOT / "styles.css"
+CSS_FILES = [ROOT / "styles.css", ROOT / "sections.css", ROOT / "responsive.css"]
 SCRIPT = ROOT / "script.js"
 
 
@@ -13,7 +13,7 @@ class ShowcaseAcceptanceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.source = HTML.read_text(encoding="utf-8")
-        cls.css = CSS.read_text(encoding="utf-8")
+        cls.css = "\n".join(path.read_text(encoding="utf-8") for path in CSS_FILES)
         cls.script = SCRIPT.read_text(encoding="utf-8")
         cls.all_frontend = "\n".join((cls.source, cls.css, cls.script))
 
@@ -77,7 +77,7 @@ class ShowcaseAcceptanceTests(unittest.TestCase):
             self.assertNotIn(fabricated_metric, self.source)
 
     def test_deployment_files_remain_valid(self):
-        for filename in ["vercel.json", "README.md", "DATA_REQUIREMENTS.md", "DEPLOY_VERCEL.md"]:
+        for filename in ["vercel.json", "README.md", "DATA_REQUIREMENTS.md", "DEPLOY_VERCEL.md", "sections.css", "responsive.css"]:
             self.assertTrue((ROOT / filename).exists(), filename)
         config = json.loads((ROOT / "vercel.json").read_text(encoding="utf-8"))
         self.assertIn("headers", config)
