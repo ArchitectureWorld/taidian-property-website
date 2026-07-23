@@ -3,150 +3,284 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#070b10">
+  <meta name="theme-color" content="#173c33">
   <meta name="application-name" content="泰典物业">
-  <meta name="version" content="2026-07-13-taidian-v2">
+  <meta name="version" content="2026-07-23-premium-community-refresh">
   <title>泰典物业｜住宅物业与老旧社区服务</title>
-  <meta name="description" content="深耕住宅物业服务，尤其懂老旧社区。用丰富经验和精细管理，让每一分投入更有价值。">
+  <meta name="description" content="泰典物业深耕住宅物业与老旧社区服务，用成熟判断、合理配置和稳定执行，让每一分投入都回到真实的居住体验。">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header">
+  <a class="skip-link" href="#main-content">跳至主要内容</a>
+
+  <header class="site-header" id="site-header">
     <div class="nav-wrap">
-      <a class="brand" href="#home" aria-label="返回首页">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>泰典物业</span>
+      <a class="brand" href="#home" aria-label="泰典物业首页">
+        <span class="brand-mark" aria-hidden="true">泰</span>
+        <span class="brand-copy">
+          <strong>泰典物业</strong>
+          <small>TAIDIAN PROPERTY</small>
+        </span>
       </a>
-      <nav class="site-nav" aria-label="主导航">
-        <a href="#home" class="active">首页</a>
+
+      <nav class="site-nav" id="site-nav" aria-label="主导航">
+        <a href="#home" class="active" aria-current="page">首页</a>
         <a href="#experience">经验</a>
-        <a href="#value">价值</a>
+        <a href="#value">服务价值</a>
         <a href="#community">老旧社区</a>
-        <a href="#cases">案例</a>
+        <a href="#cases">项目案例</a>
         <a href="#contact">联系</a>
+        <a class="nav-cta-mobile" href="tel:4008880000">拨打合作电话</a>
       </nav>
-      <a class="nav-phone" href="tel:4008880000">400-888-XXXX</a>
+
+      <div class="nav-actions">
+        <a class="nav-phone" href="tel:4008880000">
+          <span>项目合作</span>
+          <strong>400-888-XXXX</strong>
+        </a>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="打开导航菜单">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main>
-    <section id="home" class="chapter hero" aria-label="公司介绍">
-      <div class="hero-media" aria-hidden="true"></div>
-      <div class="annotation-grid" aria-hidden="true"></div>
-      <div class="tech-overlay" aria-hidden="true">
-        <span class="tech-line"></span><span class="tech-line"></span>
-        <span class="axis"></span>
-        <span class="coordinate left">X: 1287.3<br>Y: 889.2<br>ZONE: 07</span>
-        <span class="coordinate right">BUILDING A-03<br>ELEV. 12.60<br>GRID 2.5M</span>
-      </div>
-      <div class="hero-inner">
-        <div class="eyebrow">Residential Property Service · Since 2008</div>
-        <h1 class="hero-company">泰典物业</h1>
-        <h2 class="hero-slogan">深耕住宅物业<br><em>尤其懂老旧社区</em></h2>
-        <p class="hero-copy">我们把多年一线经验变成更成熟的服务方法，在有限预算下减少浪费、提高效率，让小区获得更稳定、更值得的物业服务。</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#experience">了解我们</a>
-          <a class="button" href="#contact">商务合作 <span aria-hidden="true">↗</span></a>
+  <button class="nav-scrim" id="nav-scrim" type="button" aria-label="关闭导航菜单" aria-hidden="true" hidden></button>
+
+  <main id="main-content">
+    <section id="home" class="chapter hero" aria-label="泰典物业介绍">
+      <div class="hero-inner section-shell">
+        <div class="hero-copy-block">
+          <p class="eyebrow reveal"><span>住宅物业</span><span>长期主义服务</span></p>
+          <h1 class="hero-company">泰典物业</h1>
+          <h2 class="hero-title reveal">把社区的日常，<br><em>认真做好。</em></h2>
+          <p class="hero-copy reveal">深耕住宅物业，尤其懂老旧社区。我们相信，真正的<span>性价比</span>不是少做，而是把<span>每一分投入</span>都用在居民能够感受到的地方。</p>
+          <div class="hero-actions reveal">
+            <a class="button button--primary" href="#value">了解服务方法 <span aria-hidden="true">↘</span></a>
+            <a class="button button--quiet" href="#contact">洽谈项目合作 <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="hero-service-line reveal" aria-label="核心服务方向">
+            <span>住宅物业</span>
+            <span>老旧社区</span>
+            <span>日常运营</span>
+          </div>
         </div>
-        <span class="scroll-note">SCROLL TO DISCOVER</span>
+
+        <figure class="hero-visual reveal">
+          <div class="hero-visual__backdrop" aria-hidden="true"></div>
+          <div class="hero-visual__frame">
+            <img src="assets/community.webp" alt="树荫社区里，物业人员与居民交流的生活场景" width="640" height="246">
+            <span class="hero-visual__wash" aria-hidden="true"></span>
+            <span class="hero-visual__index" aria-hidden="true">01 / COMMUNITY</span>
+          </div>
+          <blockquote class="hero-quote">
+            <p>懂社区，不靠概念，<br>靠每天在场。</p>
+            <cite>泰典物业 · 服务理念</cite>
+          </blockquote>
+          <figcaption>真实社区，需要被认真理解，也需要被长期照料。</figcaption>
+        </figure>
+      </div>
+
+      <div class="proof-strip section-shell" aria-label="泰典物业服务特点">
+        <article class="proof-item reveal">
+          <span class="proof-index">01</span>
+          <div>
+            <h3>先看清问题</h3>
+            <p>熟悉楼栋、设施与居民日常，在行动前先做准确判断。</p>
+          </div>
+        </article>
+        <article class="proof-item reveal">
+          <span class="proof-index">02</span>
+          <div>
+            <h3>把资源放对位置</h3>
+            <p>尊重预算与现实条件，让投入优先解决真实体验问题。</p>
+          </div>
+        </article>
+        <article class="proof-item reveal">
+          <span class="proof-index">03</span>
+          <div>
+            <h3>让服务稳定发生</h3>
+            <p>依靠成熟流程和一线协同，把每一天的执行做到位。</p>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section id="experience" class="chapter experience" aria-label="物业服务经验">
-      <div class="sticky-stage">
-        <div class="experience-content reveal">
-          <div><span class="mega-number">16</span><span class="mega-unit">年+</span></div>
-          <h2>住宅物业经验，沉淀成可靠判断。</h2>
-          <p>示例数据，请替换为公司真实年限。经验的价值不只是“做得久”，而是更快看清问题、更合理配置资源、更稳定地完成服务。</p>
+    <section id="experience" class="chapter experience" aria-label="住宅物业服务经验">
+      <div class="experience-inner section-shell">
+        <div class="experience-figure reveal">
+          <p class="section-label section-label--light">EXPERIENCE / 经验</p>
+          <div class="experience-number-row">
+            <strong class="experience-number">16<sup>+</sup></strong>
+            <span class="experience-unit">年</span>
+          </div>
+          <span class="data-note">示例数据，正式发布前核验</span>
+        </div>
+
+        <div class="experience-copy reveal">
+          <h2>经验不是年限，<br>是更快做对判断。</h2>
+          <p>长期服务住宅社区，让我们更熟悉设施老化、公共秩序、环境维护与居民沟通之间的真实关系。少一点反复试错，多一点现场判断，服务才能更稳、更实在。</p>
+          <dl class="experience-ledger">
+            <div><dt>看见</dt><dd>识别真正影响居住体验的问题</dd></div>
+            <div><dt>配置</dt><dd>在现实预算里安排合理优先级</dd></div>
+            <div><dt>执行</dt><dd>把标准转化为每天稳定的行动</dd></div>
+          </dl>
         </div>
       </div>
     </section>
 
-    <section id="value" class="chapter value" aria-label="高性价比服务">
-      <div class="section-inner">
-        <div class="section-kicker">VALUE FOR EVERY INVESTMENT</div>
-        <h2 class="section-title reveal">经验，让<span class="accent">每一分投入</span><br>都更有价值。</h2>
+    <section id="value" class="chapter value" aria-label="高性价比物业服务">
+      <div class="section-shell">
+        <header class="section-heading reveal">
+          <div>
+            <p class="section-label">VALUE / 服务价值</p>
+            <p class="section-sequence">02 — 04</p>
+          </div>
+          <h2><span class="headline-line">让每一分投入，</span><br><em>都回到生活里。</em></h2>
+          <p>泰典物业理解的高性价比，不是压缩必要服务，而是以经验减少浪费，以管理提高执行效率，让投入和结果之间建立更清晰的关系。</p>
+        </header>
+
         <div class="value-steps">
-          <article class="value-step">
+          <article class="value-step reveal">
             <span class="step-no">01</span>
-            <h3>更懂问题</h3>
-            <p>熟悉老旧住宅的设施状况、居民需求和协同难点，减少反复判断与无效试错。</p>
+            <h3>看见真实问题</h3>
+            <p>不被表面现象带走，先厘清设施状况、居民诉求与管理难点，再确定处理顺序。</p>
+            <span class="step-tag">UNDERSTAND</span>
           </article>
-          <article class="value-step">
+          <article class="value-step reveal">
             <span class="step-no">02</span>
-            <h3>减少浪费</h3>
-            <p>把人员、预算和服务动作放在真正影响居住体验的位置，不追求形式化投入。</p>
+            <h3>把资源放对位置</h3>
+            <p>人员、预算和服务动作优先投入到影响安全、秩序、环境与日常感受的关键环节。</p>
+            <span class="step-tag">ALLOCATE</span>
           </article>
-          <article class="value-step">
+          <article class="value-step reveal">
             <span class="step-no">03</span>
-            <h3>服务更稳定</h3>
-            <p>成熟流程与精细管理提高响应和执行效率，让同样的成本获得更可靠的服务结果。</p>
+            <h3>让服务稳定发生</h3>
+            <p>以明确职责、巡检节奏和沟通机制减少波动，让同样的成本获得更可靠的结果。</p>
+            <span class="step-tag">DELIVER</span>
           </article>
         </div>
       </div>
     </section>
 
     <section id="community" class="chapter community" aria-label="老旧社区服务能力">
-      <div class="community-copy">
-        <div class="section-kicker">UNDERSTAND THE REAL COMMUNITY</div>
-        <h2 class="reveal">老社区需要的，<br>不是昂贵的概念。</h2>
-        <p class="reveal">而是有人真正了解楼栋、设施、居民和日常生活，能够在现实条件下，把秩序、环境、维修和沟通持续做好。</p>
-        <div class="community-points reveal">
-          <span>深耕住宅与老旧小区</span>
-          <span>成熟的一线管理经验</span>
-          <span>更符合实际的成本配置</span>
+      <div class="community-inner section-shell">
+        <div class="community-manifesto reveal">
+          <p class="section-label">OLD COMMUNITY / 老旧社区</p>
+          <h2><span class="headline-line">老社区需要的，</span><br>不是昂贵的概念。</h2>
+          <p class="community-lead">而是有人真正了解楼栋、设施、居民和日常生活，在现实条件下，把看似普通的事情持续做好。</p>
+          <blockquote>
+            <p>“专业，不是把服务说得复杂；而是把复杂的问题，处理得简单、稳妥、有人情味。”</p>
+          </blockquote>
         </div>
-      </div>
-      <div class="community-visual" role="img" aria-label="树荫下的老旧住宅社区场景">
-        <div class="outline" aria-hidden="true"></div>
+
+        <div class="service-ledger reveal" aria-label="老旧社区重点服务内容">
+          <article>
+            <span>01</span>
+            <div><h3>公共秩序</h3><p>围绕出入口、停车、楼道与公共空间，建立清晰、持续的日常管理。</p></div>
+          </article>
+          <article>
+            <span>02</span>
+            <div><h3>环境维护</h3><p>关注高频使用区域与卫生死角，让环境改善真实可见、能够保持。</p></div>
+          </article>
+          <article>
+            <span>03</span>
+            <div><h3>设施巡检</h3><p>记录公共设施状态和隐患变化，按轻重缓急安排维护与协同处理。</p></div>
+          </article>
+          <article>
+            <span>04</span>
+            <div><h3>居民沟通</h3><p>用及时回应和耐心说明减少误解，让服务动作与居民感受彼此连接。</p></div>
+          </article>
+        </div>
       </div>
     </section>
 
     <section id="cases" class="chapter cases" aria-label="物业服务案例">
-      <div class="section-inner">
-        <div class="cases-head">
+      <div class="section-shell">
+        <header class="cases-heading reveal">
           <div>
-            <div class="section-kicker">SELECTED COMMUNITY CASES</div>
-            <h2 class="reveal">真正的经验，<br>来自每一个小区。</h2>
+            <p class="section-label">SELECTED WORK / 项目案例</p>
+            <h2>真正的经验，<br>来自每一个小区。</h2>
           </div>
-          <p class="reveal">以下为展示结构示例。正式开发时应替换为真实项目名称、服务年限、现场图片和可核验成果。</p>
-        </div>
+          <p>以下内容为版式和信息结构示例。正式发布时应替换为真实项目名称、服务年限、现场图片与可核验成果。</p>
+        </header>
+
         <div class="case-grid">
-          <article class="case-card reveal">
-            <div class="case-image" style="background-image:url('assets/community.webp')"></div>
-            <div class="case-content"><div class="case-index">CASE 01</div><h3>某老旧住宅小区</h3><p>长期物业服务 · 环境秩序 · 设施维护</p></div>
+          <article class="case-card case-card--featured reveal">
+            <div class="case-media case-media--featured">
+              <img src="assets/community.webp" alt="老旧住宅社区树荫道路与居民服务场景" width="640" height="246">
+              <span class="case-media__shade" aria-hidden="true"></span>
+            </div>
+            <div class="case-content">
+              <div class="case-meta"><span>CASE 01</span><span>老旧住宅社区</span></div>
+              <h3>把秩序、环境与沟通，<br>重新放回日常。</h3>
+              <p>长期物业服务 · 公共空间维护 · 居民协同</p>
+            </div>
           </article>
-          <article class="case-card reveal">
-            <div class="case-image" style="background-image:url('assets/community.webp')"></div>
-            <div class="case-content"><div class="case-index">CASE 02</div><h3>某住宅社区</h3><p>成本优化 · 快速响应 · 日常保障</p></div>
+
+          <article class="case-card case-card--compact case-card--sand reveal">
+            <div class="case-content">
+              <div class="case-meta"><span>CASE 02</span><span>住宅社区</span></div>
+              <h3>有限预算下的<br>服务优先级重整</h3>
+              <p>成本配置 · 快速响应 · 日常保障</p>
+              <span class="case-arrow" aria-hidden="true">↗</span>
+            </div>
           </article>
-          <article class="case-card reveal">
-            <div class="case-image" style="background-image:url('assets/community.webp')"></div>
-            <div class="case-content"><div class="case-index">CASE 03</div><h3>某旧改后社区</h3><p>持续运营 · 居民沟通 · 品质提升</p></div>
+
+          <article class="case-card case-card--compact case-card--forest reveal">
+            <div class="case-thumb" aria-hidden="true">
+              <img src="assets/community.webp" alt="" width="640" height="246">
+            </div>
+            <div class="case-content">
+              <div class="case-meta"><span>CASE 03</span><span>旧改后社区</span></div>
+              <h3>从接管到稳定运营</h3>
+              <p>设施巡检 · 居民沟通 · 品质维护</p>
+            </div>
           </article>
         </div>
+
+        <p class="cases-disclaimer">项目名称、图片、电话和成果数据均为待替换示例，请以泰典物业最终确认资料为准。</p>
       </div>
     </section>
 
-    <section id="contact" class="chapter contact" aria-label="联系物业公司">
-      <div class="section-inner">
-        <div class="section-kicker">START A CONVERSATION</div>
-        <div class="contact-panel">
-          <h2 class="reveal">选择经验，<br>选择更<em>值得</em>的服务。</h2>
-          <div class="contact-side reveal">
-            <small>物业项目合作咨询</small>
-            <a class="phone" href="tel:4008880000">400-888-XXXX</a>
-            <p>工作时间：周一至周日 09:00—18:00<br>地址、邮箱及公众号二维码请替换为真实信息。</p>
-            <a class="button" href="tel:4008880000">立即联系 <span aria-hidden="true">→</span></a>
-          </div>
+    <section id="contact" class="chapter contact" aria-label="联系泰典物业">
+      <div class="contact-inner section-shell">
+        <div class="contact-heading reveal">
+          <p class="section-label section-label--light">START A CONVERSATION / 联系</p>
+          <h2>选择经验，<br>让服务更值得。</h2>
+          <p>住宅物业、老旧社区服务与项目合作，欢迎进一步沟通。</p>
         </div>
-        <div class="footer-line">
-          <span>© 2026 泰典物业 · HTML视觉原型</span>
-          <span>本页中的名称、电话、数据与案例均为待替换示例</span>
+
+        <div class="contact-card reveal">
+          <span class="contact-card__label">项目合作咨询</span>
+          <a class="contact-phone" href="tel:4008880000">400-888-XXXX</a>
+          <dl>
+            <div><dt>服务时间</dt><dd>周一至周日 09:00—18:00</dd></div>
+            <div><dt>办公地址</dt><dd>待补充真实地址</dd></div>
+            <div><dt>业务邮箱</dt><dd>待补充企业邮箱</dd></div>
+          </dl>
+          <a class="button button--paper" href="tel:4008880000">立即联系 <span aria-hidden="true">→</span></a>
+          <p class="demo-notice">本区电话、地址、邮箱及服务时间均为演示信息，正式发布前请统一替换并核验。</p>
         </div>
       </div>
+
+      <footer class="site-footer section-shell">
+        <div class="footer-brand">
+          <span class="brand-mark brand-mark--footer" aria-hidden="true">泰</span>
+          <div><strong>泰典物业</strong><small>认真对待每一天的社区生活</small></div>
+        </div>
+        <div class="footer-meta">
+          <span>© 2026 泰典物业</span>
+          <span>网站内容与项目资料为待替换示例</span>
+        </div>
+      </footer>
     </section>
   </main>
+
+  <a class="mobile-contact" href="tel:4008880000" aria-label="拨打泰典物业项目合作电话">
+    <span>项目合作</span><strong>立即联系</strong>
+  </a>
 
   <script src="script.js" defer></script>
 </body>
