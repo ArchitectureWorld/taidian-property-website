@@ -32,14 +32,26 @@ jobs:
           required=(
             .image-staging/community.part-00
             .image-staging/community.part-01
+            .image-staging/community.part-02
+            .image-staging/community.part-03
             .image-staging/community-courtyard.part-00
             .image-staging/community-courtyard.part-01
             .image-staging/community-courtyard.part-02
             .image-staging/community-courtyard.part-03
+            .image-staging/community-courtyard.part-04
+            .image-staging/community-courtyard.part-05
+            .image-staging/community-courtyard.part-06
+            .image-staging/community-courtyard.part-07
+            .image-staging/community-courtyard.part-08
             .image-staging/community-inspection.part-00
             .image-staging/community-inspection.part-01
             .image-staging/community-inspection.part-02
             .image-staging/community-inspection.part-03
+            .image-staging/community-inspection.part-04
+            .image-staging/community-inspection.part-05
+            .image-staging/community-inspection.part-06
+            .image-staging/community-inspection.part-07
+            .image-staging/community-inspection.part-08
           )
           for file in "${required[@]}"; do
             if [[ ! -s "$file" ]]; then
