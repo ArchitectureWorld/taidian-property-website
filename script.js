@@ -9,21 +9,6 @@
   const mobileQuery = window.matchMedia('(max-width: 820px)');
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  const imageAssignments = [
-    ['.hero-visual__frame img', 'assets/community.webp'],
-    ['.case-media--featured img', 'assets/community-courtyard.webp'],
-    ['.case-thumb img', 'assets/community-inspection.webp'],
-  ];
-
-  imageAssignments.forEach(([selector, src]) => {
-    const image = document.querySelector(selector);
-    if (!image) return;
-    image.src = src;
-    image.width = 1280;
-    image.height = 720;
-    image.decoding = 'async';
-  });
-
   const setMenu = (open, { restoreFocus = false } = {}) => {
     if (!menuToggle || !siteNav || !navScrim) return;
 
