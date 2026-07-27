@@ -35,31 +35,6 @@ jobs:
             .image-staging/community.part-02
             .image-staging/community.part-03
             .image-staging/community.part-04
-            .image-staging/community-courtyard.part-00
-            .image-staging/community-courtyard.part-01
-            .image-staging/community-courtyard.part-02
-            .image-staging/community-courtyard.part-03
-            .image-staging/community-courtyard.part-04
-            .image-staging/community-courtyard.part-05
-            .image-staging/community-courtyard.part-06
-            .image-staging/community-courtyard.part-07
-            .image-staging/community-courtyard.part-08
-            .image-staging/community-courtyard.part-09
-            .image-staging/community-courtyard.part-10
-            .image-staging/community-courtyard.part-11
-            .image-staging/community-courtyard.part-12
-            .image-staging/community-inspection.part-00
-            .image-staging/community-inspection.part-01
-            .image-staging/community-inspection.part-02
-            .image-staging/community-inspection.part-03
-            .image-staging/community-inspection.part-04
-            .image-staging/community-inspection.part-05
-            .image-staging/community-inspection.part-06
-            .image-staging/community-inspection.part-07
-            .image-staging/community-inspection.part-08
-            .image-staging/community-inspection.part-09
-            .image-staging/community-inspection.part-10
-            .image-staging/community-inspection.part-11
           )
           for file in "${required[@]}"; do
             if [[ ! -s "$file" ]]; then
@@ -70,20 +45,12 @@ jobs:
           done
           echo "ready=true" >> "$GITHUB_OUTPUT"
 
-      - name: Decode and verify image assets
+      - name: Decode and verify image asset
         if: steps.ready.outputs.ready == 'true'
         shell: bash
         run: |
-          mkdir -p assets
           cat .image-staging/community.part-* | base64 --decode > assets/community.webp
-          cat .image-staging/community-courtyard.part-* | base64 --decode > assets/community-courtyard.webp
-          cat .image-staging/community-inspection.part-* | base64 --decode > assets/community-inspection.webp
-
-          cat <<'HASHES' | sha256sum --check --strict
-          bc8af86d93a8c61ba54bccea844a41d20a7e63b7faa0a74421d3556ac454d12b  assets/community.webp
-          51035e7362329e2a85b2d278d75fc0f40ac47dc108418836e2844c3a49562a88  assets/community-courtyard.webp
-          35ad0fee37ea58af1ffdbc5c4141460f7cc49bc31ab11f2d8d160790a7912497  assets/community-inspection.webp
-          HASHES
+          echo 'bc8af86d93a8c61ba54bccea844a41d20a7e63b7faa0a74421d3556ac454d12b  assets/community.webp' | sha256sum --check --strict
 
       - name: Run repository verification
         if: steps.ready.outputs.ready == 'true'
@@ -100,19 +67,19 @@ jobs:
 
           path = Path('docs/superpowers/plans/2026-07-27-hd-community-imagery.md')
           source = path.read_text(encoding='utf-8')
-          source = source.replace('- [ ] Materialize the three binary assets on the Git branch.', '- [x] Materialize the three binary assets on the Git branch.')
-          source = source.replace('- [ ] Run the complete repository test suite in GitHub Actions.', '- [x] Run the complete repository test suite in GitHub Actions.')
+          source = source.replace('- [ ] Materialize the binary asset on the Git branch.', '- [x] Materialize the binary asset on the Git branch.')
+          source = source.replace('- [ ] Run the complete repository test suite and `node --check script.js` in GitHub Actions.', '- [x] Run the complete repository test suite and `node --check script.js` in GitHub Actions.')
           path.write_text(source, encoding='utf-8')
           PY
           rm -rf .image-staging
           rm -f .github/workflows/materialize-hd-imagery.yml
 
-      - name: Commit verified assets
+      - name: Commit verified asset
         if: steps.ready.outputs.ready == 'true'
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git commit -m 'feat: add high-resolution community imagery'
+          git commit -m 'feat: replace community image with HD asset'
           git push
