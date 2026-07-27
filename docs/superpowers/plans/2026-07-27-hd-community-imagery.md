@@ -41,6 +41,6 @@
 
 ### Task 3: Verify and review
 
-- [ ] Materialize the binary asset on the Git branch.
-- [ ] Run the complete repository test suite and `node --check script.js` in GitHub Actions.
+- [x] Materialize the binary asset on the Git branch.
+- [x] Run the complete repository test suite and `node --check script.js` in GitHub Actions.
 - [ ] Open a Draft pull request for review.
