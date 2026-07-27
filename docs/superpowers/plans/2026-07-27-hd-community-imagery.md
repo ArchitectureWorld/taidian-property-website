@@ -43,4 +43,4 @@
 
 - [x] Materialize the binary asset on the Git branch.
 - [x] Run the complete repository test suite and `node --check script.js` in GitHub Actions.
-- [ ] Open a Draft pull request for review.
+- [x] Open Draft PR #2 for review.
