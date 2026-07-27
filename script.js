@@ -99,6 +99,18 @@
     header?.classList.toggle('is-scrolled', window.scrollY > 16);
   };
 
+  const syncSceneFallbacks = () => {
+    document.querySelectorAll('[data-scene-sprite]').forEach((image) => {
+      const isSprite = image.currentSrc.includes('community-scenes.avif');
+      image.classList.toggle('is-fallback', !isSprite);
+    });
+  };
+
   syncHeaderState();
+  syncSceneFallbacks();
   window.addEventListener('scroll', syncHeaderState, { passive: true });
+  window.addEventListener('load', syncSceneFallbacks, { once: true });
+  document.querySelectorAll('[data-scene-sprite]').forEach((image) => {
+    image.addEventListener('load', syncSceneFallbacks);
+  });
 })();
