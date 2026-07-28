@@ -1,67 +1,27 @@
 <!doctype html>
 <html lang="zh-CN" data-concept="architectural-wireframe">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#111514">
-  <title>泰典物业｜动态概念 B：建筑线框聚合体</title>
-  <meta name="description" content="泰典物业动态首屏概念：以建筑线框与服务路径表达住宅物业、老旧社区和数字化管理能力。">
-  <link rel="stylesheet" href="concept.css">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0b0f10">
+  <title>泰典物业｜滚动概念 B：建筑线框聚合体</title><meta name="description" content="滚轮驱动的泰典物业动态概念：建筑线框随滚动生长、重组并形成服务路径。"><link rel="stylesheet" href="scroll.css">
 </head>
 <body>
-  <div class="page">
-    <main class="device" aria-live="polite">
-      <header class="topbar">
-        <a class="brand" href="#" aria-label="泰典物业首页">
-          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="brand-copy"><strong>泰典物业</strong><small>TAIDIAN PROPERTY</small></span>
-        </a>
-        <nav class="topnav" aria-label="概念导航">
-          <button type="button" data-state="0" class="is-active">首页</button>
-          <button type="button" data-state="1">经验</button>
-          <button type="button" data-state="2">老旧社区</button>
-          <button type="button" data-state="3">高性价比</button>
-          <button type="button" data-state="4">合作</button>
-        </nav>
-        <span class="edition">ARCHITECTURAL SYSTEM / B</span>
-      </header>
-
+  <section class="scroll-story" id="scrollStory" aria-label="泰典物业滚动叙事概念 B">
+    <div class="device-shell"><main class="device" aria-live="polite">
+      <header class="topbar"><a class="brand" href="#"><span class="brand-mark"><i></i><i></i><i></i></span><span><strong>泰典物业</strong><small>TAIDIAN PROPERTY</small></span></a><nav class="topnav" aria-label="章节导航"><button class="is-active" data-state="0">首页</button><button data-state="1">经验</button><button data-state="2">老旧社区</button><button data-state="3">高性价比</button><button data-state="4">合作</button></nav><span class="system">SPATIAL OPERATING MODEL</span></header>
       <section class="stage">
-        <div class="copy">
-          <p class="sequence" id="chapterCode">001 / 005</p>
-          <p class="kicker" id="stateKicker">SPACE / ORDER / SERVICE</p>
-          <h1 class="title" id="stateTitle">让空间，<br><span class="accent">被更精确地管理</span></h1>
-          <p class="description" id="stateCopy">从楼栋、设施到公共空间，把复杂社区转化成清晰、可持续的运营结构。</p>
-          <div class="actions">
-            <button class="primary" id="nextState" type="button">查看下一个状态 <span>↗</span></button>
-            <button class="secondary" id="motionToggle" type="button" aria-pressed="false">暂停动态</button>
-          </div>
-          <dl class="ledger">
-            <div><dt>RESIDENTIAL</dt><dd>住宅物业</dd></div>
-            <div><dt>DIGITAL</dt><dd>数字化管理</dd></div>
-            <div><dt>LONG TERM</dt><dd>长期运营</dd></div>
-          </dl>
-        </div>
-
-        <div class="visual">
-          <canvas id="wireframe-stage" aria-label="建筑线框与服务路径动态模型"></canvas>
-          <span class="annotation a">BUILDING / A-07<br>GRID / 2.500 M</span>
-          <span class="annotation b">30.5928° N<br>114.3055° E</span>
-          <span class="annotation c" id="modelLabel">MODEL / COMMUNITY CORE</span>
-          <span class="axis-x"></span><span class="axis-y"></span><span class="scan"></span>
-        </div>
+        <div class="copy-panel"><p class="chapter-code" id="chapterCode">001 / 005</p><div class="copy-stack">
+          <article class="copy-state" data-copy-state="0"><p class="kicker">把社区看作一套空间运营系统</p><h1>让空间被看见<br><span>让服务有迹可循</span></h1><p>建筑、设施、居民与服务路径，在同一套模型里建立清晰关系。</p></article>
+          <article class="copy-state" data-copy-state="1"><p class="kicker">经验，让复杂空间更快被理解</p><h1>更早识别问题<br><span>更准确安排优先级</span></h1><p>长期住宅物业经验，转化为对楼栋、设施和日常需求的空间判断。</p></article>
+          <article class="copy-state" data-copy-state="2"><p class="kicker">老旧社区不是简单更新</p><h1>梳理原有秩序<br><span>再让空间持续生长</span></h1><p>在密集、复杂的既有关系中找到关键节点，让改善不破坏社区生活。</p></article>
+          <article class="copy-state" data-copy-state="3"><p class="kicker">减少路径损耗</p><h1>让人员与资源<br><span>沿更短路径抵达问题</span></h1><p>数字化让巡检、响应、处理与复盘成为一条清晰链路，提升服务性价比。</p></article>
+          <article class="copy-state" data-copy-state="4"><p class="kicker">长期运营，而非一次性交付</p><h1>让每一次服务<br><span>沉淀为下一次判断</span></h1><p>持续记录、持续优化，让社区在稳定运营中形成长期价值。</p></article>
+        </div><div class="copy-actions"><button id="nextState" class="next-state">继续滚动 ↓</button><span><i></i>滚轮驱动模型</span></div></div>
+        <div class="model-panel" id="modelPanel"><canvas id="architecture-canvas" aria-label="随滚动变化的建筑线框模型"></canvas><div class="axis"><span>X</span><span>Y</span><span>Z</span></div><div class="model-meta"><span>TAIDIAN / SPATIAL MODEL</span><span id="modelLabel">MODEL / COMMUNITY</span></div><div class="coordinates">30.5928°N / 114.3055°E<br>GRID 2.50M / LOD 03</div></div>
       </section>
-
-      <nav class="tabs" aria-label="动态章节">
-        <button class="state-tab is-active" type="button" data-state="0"><small>001</small><span>空间秩序</span></button>
-        <button class="state-tab" type="button" data-state="1"><small>002</small><span>经验结构</span></button>
-        <button class="state-tab" type="button" data-state="2"><small>003</small><span>老旧社区</span></button>
-        <button class="state-tab" type="button" data-state="3"><small>004</small><span>高性价比</span></button>
-        <button class="state-tab" type="button" data-state="4"><small>005</small><span>长期合作</span></button>
-      </nav>
-    </main>
-  </div>
-
-  <script src="concept.js" defer></script>
-</body>
-</html>
+      <footer class="statebar"><div class="progress-track"><span class="progress-fill" id="progressFill"></span></div><nav class="tabs"><button class="state-tab is-active" data-state="0"><small>001</small><span>空间系统</span></button><button class="state-tab" data-state="1"><small>002</small><span>经验结构</span></button><button class="state-tab" data-state="2"><small>003</small><span>社区梳理</span></button><button class="state-tab" data-state="3"><small>004</small><span>效率路径</span></button><button class="state-tab" data-state="4"><small>005</small><span>长期运营</span></button></nav></footer>
+    </main></div>
+    <div class="story-steps" aria-hidden="true"><div class="story-step"></div><div class="story-step"></div><div class="story-step"></div><div class="story-step"></div><div class="story-step"></div></div>
+  </section>
+  <section class="after-story"><p>TAIDIAN PROPERTY</p><h2>空间有结构，<br>服务才有长期价值。</h2></section>
+  <script src="scroll.js" defer></script>
+</body></html>
