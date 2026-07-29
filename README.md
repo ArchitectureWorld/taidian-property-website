@@ -1,6 +1,6 @@
 # 泰典物业展示型官网
 
-一个以移动端传播为优先的静态企业展示官网原型，核心传递三项信息：
+一个以移动端传播为优先的企业展示官网，核心传递三项信息：
 
 1. 公司名称：泰典物业；
 2. 住宅物业与老旧小区服务经验丰富；
@@ -14,6 +14,20 @@
 - 无需 Node.js、数据库或构建命令；
 - 已提供 `vercel.json`，可直接导入 Vercel；
 - 支持桌面端和移动端浏览。
+
+## 滚动叙事研发方向
+
+当前动态官网研发统一定义为 **滚动叙事（Scrollytelling）**：以滚动进度作为叙事时间轴，让中文文案、动态视觉、章节编号和背景交接共同推进品牌故事，而不是单纯加入自动动画或按钮切页。
+
+完整要求见：[`docs/SCROLLYTELLING_REQUIREMENTS.md`](docs/SCROLLYTELLING_REQUIREMENTS.md)
+
+当前三个独立实验分支：
+
+- `concept/community-life-network`：社区生命网络滚动叙事；
+- `concept/architectural-wireframe`：建筑空间模型滚动叙事；
+- `concept/community-digital-overlay`：真实社区数字图层滚动叙事。
+
+三个分支在确认前均不合并到 `main`。
 
 ## 本地预览
 
