@@ -38,6 +38,10 @@
 
   const uiElements = [...document.querySelectorAll('.story-copy,.topbar,.statebar,.visual-meta,.visual-caption,.model-meta,.coordinates,.hud')];
   const geometryElements = [...document.querySelectorAll('.network-canvas,.orbit,#architecture-canvas,.wireframe-grid,#service-overlay,.scan-line')];
+  const finalImage = document.querySelector('.story-image--3');
+  const finalImageBaseOpacity = concept === 'community-life-network' ? 0.56 : concept === 'architectural-spatial-model' ? 0.52 : 0.95;
+  const finalImageTargetOpacity = concept === 'community-life-network' ? 0.84 : concept === 'architectural-spatial-model' ? 0.78 : 0.95;
+  let finalImageStart = null;
 
   const finaleStart = 0.78;
   const finaleEnd = 0.985;
@@ -97,8 +101,44 @@
     }
   }
 
+  function updateFinalImage(local) {
+    if (!finalImage) return;
+    if (local <= 0.0001) {
+      finalImageStart = null;
+      for (const property of ['left','top','right','bottom','width','height','transform','maskImage']) finalImage.style[property] = '';
+      root.style.removeProperty('--image-3-opacity');
+      return;
+    }
+    const parent = finalImage.parentElement;
+    const parentRect = parent.getBoundingClientRect();
+    if (!finalImageStart) {
+      const rect = finalImage.getBoundingClientRect();
+      finalImageStart = { left: rect.left - parentRect.left, top: rect.top - parentRect.top, width: rect.width, height: rect.height };
+    }
+    const expand = smootherstep(local / 0.34);
+    const targetWidth = Math.max(parentRect.width, parentRect.height * 16 / 9);
+    const targetHeight = targetWidth * 9 / 16;
+    const targetLeft = (parentRect.width - targetWidth) / 2;
+    const targetTop = (parentRect.height - targetHeight) / 2;
+    finalImage.style.inset = 'auto';
+    finalImage.style.left = `${lerp(finalImageStart.left, targetLeft, expand)}px`;
+    finalImage.style.top = `${lerp(finalImageStart.top, targetTop, expand)}px`;
+    finalImage.style.right = 'auto';
+    finalImage.style.bottom = 'auto';
+    finalImage.style.width = `${lerp(finalImageStart.width, targetWidth, expand)}px`;
+    finalImage.style.height = `${lerp(finalImageStart.height, targetHeight, expand)}px`;
+    finalImage.style.transform = 'none';
+    const startAlpha = expand;
+    const midAlpha = 0.2 + expand * 0.8;
+    finalImage.style.maskImage = concept === 'community-digital-layer'
+      ? 'none'
+      : `linear-gradient(90deg,rgba(0,0,0,${startAlpha}) 0%,rgba(0,0,0,${midAlpha}) 13%,#000 35%,#000 100%)`;
+    root.style.setProperty('--image-3-opacity', String(lerp(finalImageBaseOpacity, finalImageTargetOpacity, expand)));
+  }
+
   function draw(progress) {
     const local = clamp((progress - finaleStart) / (finaleEnd - finaleStart));
+    updateFinalImage(local);
     const cover = smootherstep(local / 0.16);
     const shrink = smootherstep((local - 0.015) / 0.9);
     const scale = Math.exp(lerp(Math.log(finaleStartScale), 0, shrink));
