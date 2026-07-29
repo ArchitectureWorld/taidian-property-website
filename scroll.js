@@ -17,9 +17,10 @@
   const imageSequence = [0, 0, 1, 2, 3];
   const imageIntensity = [0.08, 0.28, 0.60, 0.34, 0.56];
   const particleCount = 82;
-  const openingRange = 0.18;
-  const contentEnd = 0.84;
-  const handoffStart = 0.88;
+  const contentEnd = 0.78;
+  const finaleStart = 0.80;
+  const finaleEnd = 0.985;
+  const handoffStart = 0.992;
 
   let width = 1, height = 1, ratio = 1;
   let storyStart = 0, storyDistance = 1;
@@ -96,7 +97,7 @@
   function updateCopy(state) {
     const { from, to, mix } = state;
     copyStates.forEach((element) => { element.style.opacity = '0'; element.style.transform = 'translate3d(0,20px,0)'; });
-    const blend = from === to ? 0 : window.TaidianStoryMath.smootherstep(clamp((mix - .3) / .4));
+    const blend = from === to ? 0 : smootherstep(clamp((mix - .3) / .4));
     copyStates[from].style.opacity = (1 - blend).toFixed(3);
     copyStates[from].style.transform = `translate3d(0,${(-14 * blend).toFixed(2)}px,0)`;
     if (to !== from) {
@@ -108,7 +109,7 @@
       activeState = nextState;
       code.textContent = `${String(activeState + 1).padStart(3,'0')} / 005`;
       modelLabel.textContent = labels[activeState];
-      nextButton.innerHTML = activeState === 4 ? '进入合作 <span>↓</span>' : '继续滚动 <span>↓</span>';
+      nextButton.innerHTML = activeState === 4 ? '进入品牌收束 <span>↓</span>' : '继续滚动 <span>↓</span>';
       [...tabs, ...topButtons].forEach((button) => {
         const active = Number(button.dataset.state) === activeState;
         button.classList.toggle('is-active', active);
@@ -150,23 +151,31 @@
     progressFill.style.transform=`scaleX(${progress.toFixed(5)})`;
   }
 
-  function updateGlobalVisuals(rawProgress, handoff) {
+  function updateGlobalVisuals(handoff) {
     root.style.setProperty('--handoff', handoff.toFixed(5));
     root.style.setProperty('--shell-y', `${(-handoff * 18).toFixed(2)}px`);
   }
 
-  function applyOpeningState(progress) {
-    const opening = clamp(progress / openingRange);
-    const mask = smootherstep ? smootherstep(clamp((opening - 0.10) / 0.48)) : clamp((opening - 0.10) / 0.48);
-    const solid = smootherstep ? smootherstep(clamp((opening - 0.62) / 0.24)) : clamp((opening - 0.62) / 0.24);
-    const stage = 1 - (smootherstep ? smootherstep(clamp((opening - 0.78) / 0.18)) : clamp((opening - 0.78) / 0.18));
-    root.style.setProperty('--opening-overlay-opacity', (mask * (1 - solid * 0.1)).toFixed(4));
-    root.style.setProperty('--opening-fill-opacity', (mask * (1 - solid)).toFixed(4));
-    root.style.setProperty('--opening-solid-opacity', solid.toFixed(4));
-    root.style.setProperty('--opening-word-scale', (1.48 - mask * 0.58).toFixed(4));
-    root.style.setProperty('--opening-stage-opacity', stage.toFixed(4));
-    root.style.setProperty('--story-copy-opacity', clamp((progress - openingRange * 0.66) / (openingRange * 0.34)).toFixed(4));
-    root.style.setProperty('--story-ui-opacity', clamp((progress - openingRange * 0.72) / (openingRange * 0.28)).toFixed(4));
+  function applyFinaleState(rawProgress) {
+    const progress = clamp((rawProgress - finaleStart) / (finaleEnd - finaleStart));
+    const enter = smootherstep(clamp(progress / .08));
+    const reveal = smootherstep(clamp((progress - .02) / .78));
+    const fieldFade = 1 - smootherstep(clamp((progress - .05) / .30));
+    const blendIn = smootherstep(clamp((progress - .10) / .38));
+    const solid = smootherstep(clamp((progress - .76) / .22));
+    const scale = lerp(32, 1, reveal);
+    const storyFade = 1 - smootherstep(clamp((progress - .02) / .20));
+    root.style.setProperty('--finale-opacity', enter.toFixed(4));
+    root.style.setProperty('--finale-word-scale', scale.toFixed(4));
+    root.style.setProperty('--finale-field-opacity', (enter * fieldFade).toFixed(4));
+    root.style.setProperty('--finale-blend-opacity', (enter * blendIn * (1 - solid)).toFixed(4));
+    root.style.setProperty('--finale-solid-opacity', solid.toFixed(4));
+    root.style.setProperty('--finale-solid-text-opacity', solid.toFixed(4));
+    root.style.setProperty('--finale-media-opacity', (1 - solid).toFixed(4));
+    root.style.setProperty('--finale-kicker-opacity', smootherstep(clamp((progress - .82) / .16)).toFixed(4));
+    root.style.setProperty('--story-copy-opacity', storyFade.toFixed(4));
+    root.style.setProperty('--story-ui-opacity', storyFade.toFixed(4));
+    root.style.setProperty('--geometry-opacity', storyFade.toFixed(4));
   }
 
   function renderFrame(now) {
@@ -174,12 +183,12 @@
     lastFrameTime = now;
     if (reducedMotion) { displayProgress=targetProgress; pointerX=pointerTargetX; pointerY=pointerTargetY; }
     else { displayProgress=damp(displayProgress,targetProgress,17,delta); pointerX=damp(pointerX,pointerTargetX,12,delta); pointerY=damp(pointerY,pointerTargetY,12,delta); }
-    const contentProgress = clamp((displayProgress - openingRange) / (contentEnd - openingRange));
-    const handoff = window.TaidianStoryMath.smootherstep(clamp((displayProgress-handoffStart)/(1-handoffStart)));
-    applyOpeningState(displayProgress);
+    const contentProgress = clamp(displayProgress / contentEnd);
+    const handoff = smootherstep(clamp((displayProgress-handoffStart)/(1-handoffStart)));
+    applyFinaleState(displayProgress);
     applyImageState(contentProgress);
     drawNetwork(contentProgress);
-    updateGlobalVisuals(displayProgress,handoff);
+    updateGlobalVisuals(handoff);
     const moving=Math.abs(displayProgress-targetProgress)>.00012||Math.abs(pointerX-pointerTargetX)>.0005||Math.abs(pointerY-pointerTargetY)>.0005;
     if (moving) animationFrame=requestAnimationFrame(renderFrame); else { displayProgress=targetProgress; animationFrame=0; }
   }
@@ -189,11 +198,11 @@
   function resizeCanvas(){ const rect=canvas.getBoundingClientRect(); const limit=innerWidth<=720?1.25:1.5; ratio=Math.min(devicePixelRatio||1,limit); width=Math.max(1,rect.width); height=Math.max(1,rect.height); canvas.width=Math.round(width*ratio); canvas.height=Math.round(height*ratio); context.setTransform(ratio,0,0,ratio,0,0); }
   function measure(){ measureFrame=0; const rect=story.getBoundingClientRect(); storyStart=scrollY+rect.top; storyDistance=Math.max(1,story.offsetHeight-innerHeight); resizeCanvas(); updateTargetFromScroll(); if (!displayProgress) displayProgress=targetProgress; scheduleRender(); }
   function scheduleMeasure(){ if(measureFrame) return; measureFrame=requestAnimationFrame(measure); }
-  function scrollToState(index){ const normalized=openingRange+clamp(index/4)*(contentEnd-openingRange); scrollTo({top:storyStart+storyDistance*normalized,behavior:reducedMotion?'auto':'smooth'}); }
+  function scrollToState(index){ const normalized=clamp(index/4)*contentEnd; scrollTo({top:storyStart+storyDistance*normalized,behavior:reducedMotion?'auto':'smooth'}); }
 
   tabs.forEach((button)=>button.addEventListener('click',()=>scrollToState(Number(button.dataset.state))));
   topButtons.forEach((button)=>button.addEventListener('click',()=>scrollToState(Number(button.dataset.state))));
-  nextButton.addEventListener('click',()=> activeState<4 ? scrollToState(activeState+1) : scrollTo({top:storyStart+storyDistance,behavior:reducedMotion?'auto':'smooth'}));
+  nextButton.addEventListener('click',()=> activeState<4 ? scrollToState(activeState+1) : scrollTo({top:storyStart+storyDistance*(finaleStart+(finaleEnd-finaleStart)*.72),behavior:reducedMotion?'auto':'smooth'}));
   visual.addEventListener('pointermove',(event)=>{ const rect=visual.getBoundingClientRect(); pointerTargetX=((event.clientX-rect.left)/rect.width-.5)*2; pointerTargetY=((event.clientY-rect.top)/rect.height-.5)*2; scheduleRender(); });
   visual.addEventListener('pointerleave',()=>{pointerTargetX=0;pointerTargetY=0;scheduleRender();});
   addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',scheduleMeasure,{passive:true});
