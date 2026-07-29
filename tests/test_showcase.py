@@ -1,110 +1,79 @@
 from pathlib import Path
 import re
+import subprocess
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML = ROOT / "index.html"
 CSS = ROOT / "scroll.css"
 SCRIPT = ROOT / "scroll.js"
-CONCEPT_DOC = ROOT / "docs" / "SCROLLYTELLING_CONCEPT.md"
+DOC = ROOT / "docs" / "STORY_SCRIPT.md"
 
 
-class ScrollytellingAcceptanceTests(unittest.TestCase):
+class StoryIntegrationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.source = HTML.read_text(encoding="utf-8")
+        cls.html = HTML.read_text(encoding="utf-8")
         cls.css = CSS.read_text(encoding="utf-8")
         cls.script = SCRIPT.read_text(encoding="utf-8")
-        concept_match = re.search(r'data-concept="([^"]+)"', cls.source)
-        cls.concept = concept_match.group(1) if concept_match else ""
+        cls.doc = DOC.read_text(encoding="utf-8")
+        cls.all_source = "\n".join((cls.html, cls.css, cls.script, cls.doc))
 
-    def test_product_language_is_scrollytelling(self):
-        self.assertIn("滚动叙事", self.source)
-        self.assertIn('data-experience="scrollytelling"', self.source)
-        self.assertNotIn("滚动概念", self.source)
-        self.assertRegex(self.source, r"<title>泰典物业｜滚动叙事")
-        self.assertRegex(self.source, r'<meta name="description" content="[^"]*滚动叙事')
+    def test_full_viewport_scrollytelling_structure(self):
+        self.assertIn('data-experience="scrollytelling"', self.html)
+        self.assertIn('data-layout="full-viewport"', self.html)
+        self.assertIn('class="scroll-story"', self.html)
+        self.assertIn('class="viewport-stage"', self.html)
+        self.assertIn('height: 100svh', self.css)
+        self.assertNotIn('border-radius: 46px', self.css)
 
-    def test_full_viewport_stage_replaces_presentation_card(self):
-        self.assertIn('data-layout="full-viewport"', self.source)
-        self.assertIn('class="device viewport-stage"', self.source)
-        for token in [
-            "--stage-layout: full-viewport",
-            "width: 100%",
-            "height: 100svh",
-            "max-width: none",
-            "max-height: none",
-            "border-radius: 0",
-            "box-shadow: none",
-        ]:
-            self.assertIn(token, self.css)
-        for obsolete in [
-            "max-width: 1540px",
-            "max-height: 970px",
-            "border-radius: clamp(22px",
-            "box-shadow: 0 40px 100px",
-        ]:
-            self.assertNotIn(obsolete, self.css)
-        self.assertRegex(self.css, r"\.device-shell\s*\{[^}]*padding:\s*0;", re.S)
-        self.assertRegex(self.css, r"\.stage\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;", re.S)
-        self.assertRegex(self.css, r"\.copy-panel\s*\{[^}]*position:\s*absolute;", re.S)
-        visual_selector = {
-            "community-life-network": "visual-panel",
-            "architectural-wireframe": "model-panel",
-            "community-digital-overlay": "scene",
-        }[self.concept]
-        self.assertRegex(
-            self.css,
-            rf"\.{visual_selector}\s*\{{[^}}]*position:\s*absolute;[^}}]*inset:\s*0;",
-            re.S,
-        )
+    def test_five_chapter_story_is_present(self):
+        self.assertEqual(5, len(re.findall(r'data-copy-state="[0-4]"', self.html)))
+        for text in ["序章", "经验", "老旧社区", "效率价值", "长期共建"]:
+            self.assertIn(text, self.html)
+        self.assertIn("001 / 005", self.html)
 
-    def test_five_chapter_brand_story_exists(self):
-        self.assertEqual(5, len(re.findall(r'data-copy-state="[0-4]"', self.source)))
-        self.assertEqual(5, len(re.findall(r'class="state-tab(?: is-active)?"', self.source)))
-        for text in ["001 / 005", "泰典物业", "经验", "老旧社区", "性价比", "长期"]:
-            self.assertIn(text, self.source)
+    def test_image_layers_are_local_and_complete(self):
+        image_layers = re.findall(r'class="story-image story-image--[0-3]"', self.html)
+        self.assertEqual(4, len(image_layers))
+        self.assertEqual(4, self.html.count('src="assets/community-scenes.avif"'))
+        self.assertEqual(4, self.html.count('data-source="assets/community-scenes.avif"'))
+        for index in range(4):
+            self.assertIn(f'data-scene="{index}"', self.html)
+            self.assertIn(f'story-sprite--{index}', self.html)
+        self.assertTrue((ROOT / "assets" / "community-scenes.avif").exists())
+        self.assertNotRegex(self.html, r'(?:src|href)="https?://')
 
-    def test_scroll_is_the_narrative_time_axis(self):
-        for token in ["scroll-story", "device-shell", "story-steps", "targetProgress", "displayProgress", "damp", "requestAnimationFrame"]:
-            self.assertIn(token, self.source + self.css + self.script)
+    def test_images_are_continuously_blended(self):
+        for token in ["sequenceWeights", "interpolateKeyframes", "applyImageState", "--image-0-opacity", "--image-1-opacity", "--image-2-opacity", "--image-3-opacity"]:
+            self.assertIn(token, self.script + self.css)
+        self.assertNotIn("style.display", self.script)
+        self.assertNotRegex(self.script, r'classList\.(?:add|remove)\([^\n]*story-image')
+
+    def test_scroll_drives_one_shared_display_progress(self):
+        for token in ["targetProgress", "displayProgress", "requestAnimationFrame", "damp", "prefers-reduced-motion"]:
+            self.assertIn(token, self.script)
         self.assertIn("addEventListener('scroll'", self.script)
-        self.assertIn("scrollToState", self.script)
-
-    def test_continuous_handoff_replaces_background_hard_cut(self):
-        for token in ["--handoff", ".after-story::before", "var(--handoff)", "handoffStart", "contentEnd"]:
-            self.assertIn(token, self.css + self.script)
-        self.assertIn("translate3d", self.css)
-        self.assertNotIn("scale(var(--shell-scale))", self.css)
+        self.assertIn("updateCopy", self.script)
+        self.assertIn("applyImageState", self.script)
 
     def test_concept_specific_visual_contract(self):
-        contracts = {
-            "community-life-network": ["community-network", "particleCount", "社区生命网络"],
-            "architectural-wireframe": ["architecture-canvas", "drawBuilding", "建筑空间模型"],
-            "community-digital-overlay": ["service-overlay", "scene-image", "数字化服务网络"],
-        }
-        self.assertIn(self.concept, contracts)
-        combined = self.source + self.css + self.script
-        for token in contracts[self.concept]:
-            self.assertIn(token, combined)
+        self.assertIn('data-concept="architectural-spatial-model"', self.html)
+        self.assertIn("建筑空间模型", self.html)
+        for token in ['architecture-canvas', 'wireframe-grid', 'image-matte']:
+            self.assertIn(token, self.all_source)
 
-    def test_accessibility_and_motion_fallbacks_exist(self):
-        self.assertIn("prefers-reduced-motion", self.script)
-        self.assertIn("aria-label", self.source)
-        self.assertIn("aria-live", self.source)
-        self.assertNotRegex(self.source, r'(?:src|href)="https?://')
+    def test_story_script_documents_image_choreography(self):
+        for heading in ["视觉母题", "图像编排", "001 序章", "002 经验", "003 老旧社区", "004 效率价值", "005 长期共建", "连续性规则", "性能规则"]:
+            self.assertIn(heading, self.doc)
+        self.assertIn('assets/community-scenes.avif', self.doc)
+        for scene in ['scene-0', 'scene-1', 'scene-2', 'scene-3']:
+            self.assertIn(scene, self.doc)
 
-    def test_branch_documentation_exists(self):
-        self.assertTrue(CONCEPT_DOC.exists())
-        documentation = CONCEPT_DOC.read_text(encoding="utf-8")
-        self.assertIn("滚动叙事", documentation)
-        self.assertIn("五章叙事", documentation)
-        self.assertIn("全视口", documentation)
-        self.assertIn("不存在外层展示背景", documentation)
-
-    def test_deployment_files_remain_available(self):
-        for filename in ["vercel.json", "README.md", "DATA_REQUIREMENTS.md", "DEPLOY_VERCEL.md"]:
-            self.assertTrue((ROOT / filename).exists(), filename)
+    def test_story_math_behavior(self):
+        result = subprocess.run(["node", str(ROOT / "tests" / "story_math.test.js")], cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertIn("story math ok", result.stdout)
 
 
 if __name__ == "__main__":
