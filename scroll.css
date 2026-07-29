@@ -1,4 +1,13 @@
 :root {
+  --opening-stage-opacity: 1;
+  --opening-word-scale: 1.45;
+  --opening-fill-opacity: 0;
+  --opening-solid-opacity: 0;
+  --opening-overlay-opacity: 0;
+  --story-copy-opacity: 0;
+  --story-ui-opacity: 0;
+  --opening-text: #1f2322;
+  --opening-bg: #ebe8e1;
   --viewport-bg: #ebe8e1;
   --viewport-deep: #d3cec4;
   --ink: #1c2020;
@@ -80,6 +89,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .system-state i { display: inline-block; width: 6px; height: 6px; margin-right: 8px; border-radius: 50%; background: #d39a3b; box-shadow: 0 0 14px rgba(211,154,59,.72); }
 .story-stage { position: absolute; inset: 76px 0 104px; }
 .story-copy {
+  opacity: var(--story-copy-opacity);
   position: absolute;
   z-index: 20;
   top: 0;
@@ -132,8 +142,10 @@ button { -webkit-tap-highlight-color: transparent; }
 .orbit { position: absolute; z-index: 4; top: 50%; left: 72%; border: 1px solid rgba(41,45,43,.10); border-radius: 50%; transform: translate(-50%,-50%); pointer-events: none; }
 .orbit-a { width: min(46vw, 700px); aspect-ratio: 1; }
 .orbit-b { width: min(62vw, 930px); aspect-ratio: 1; }
-.visual-meta { position: absolute; z-index: 8; top: 26px; right: clamp(28px,5vw,80px); left: 54%; display: flex; justify-content: space-between; color: #747a76; font: 9px ui-monospace, monospace; letter-spacing: .12em; }
-.visual-caption { position: absolute; z-index: 8; right: clamp(28px,5vw,80px); bottom: 30px; display: grid; gap: 5px; text-align: right; }
+.visual-meta {
+  opacity: var(--story-ui-opacity); position: absolute; z-index: 8; top: 26px; right: clamp(28px,5vw,80px); left: 54%; display: flex; justify-content: space-between; color: #747a76; font: 9px ui-monospace, monospace; letter-spacing: .12em; }
+.visual-caption {
+  opacity: var(--story-ui-opacity); position: absolute; z-index: 8; right: clamp(28px,5vw,80px); bottom: 30px; display: grid; gap: 5px; text-align: right; }
 .visual-caption strong { font-size: 16px; }
 .visual-caption span { color: #777d79; font-size: 11px; }
 .statebar { position: absolute; z-index: 35; right: 0; bottom: 0; left: 0; height: 104px; padding: 13px clamp(24px,5vw,84px) 14px; border-top: 1px solid var(--line); background: linear-gradient(to top, rgba(235,232,225,.97), rgba(235,232,225,.82) 70%, transparent); }
@@ -172,6 +184,7 @@ button { -webkit-tap-highlight-color: transparent; }
   .state-tab { text-align: center; }
   .state-tab span { display: none; }
   .system-state span { display: none; }
+  .opening-kicker{top:calc(50% - 18vw);font-size:10px}.opening-word{font-size:clamp(56px,18vw,110px)}
 }
 @media (max-width: 560px) {
   .brand { font-size: 15px; }
@@ -185,3 +198,13 @@ button { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto!important; transition-duration: .001ms!important; animation-duration: .001ms!important; }
 }
+
+.opening-layer { position:absolute; inset:0; z-index:24; opacity:var(--opening-stage-opacity); pointer-events:none; overflow:hidden; }
+.opening-media, .opening-fade { position:absolute; inset:0; }
+.opening-media { background-image: var(--opening-image); background-size: 400% 100%; background-position: var(--opening-position, 0%) center; transform: scale(1.04); }
+.opening-fade { background: var(--opening-bg); opacity: var(--opening-overlay-opacity); }
+.opening-title-wrap { position:absolute; inset:0; display:grid; place-items:center; text-align:center; }
+.opening-kicker { position:absolute; top:calc(50% - 11vw); left:50%; transform:translateX(-50%); margin:0; color:rgba(255,255,255,.78); font-size:11px; letter-spacing:.18em; text-transform:uppercase; }
+.opening-word { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(var(--opening-word-scale)); font-weight:700; letter-spacing:-.08em; white-space:nowrap; font-size:clamp(64px, 12vw, 230px); line-height:.92; }
+.opening-word--fill { opacity: var(--opening-fill-opacity); color: transparent; background-image: var(--opening-image); background-size: 400% 100%; background-position: var(--opening-position, 0%) center; -webkit-background-clip:text; background-clip:text; filter: saturate(.92) contrast(1.02); }
+.opening-word--solid { opacity: var(--opening-solid-opacity); color: var(--opening-text); }
