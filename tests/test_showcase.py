@@ -19,17 +19,38 @@ class ShowcaseAcceptanceTests(unittest.TestCase):
 
     def test_static_site_and_metadata_exist(self):
         self.assertIn("<!doctype html>", self.source.lower())
-        self.assertIn("<title>泰典物业", self.source)
+        self.assertIn("<title>武汉泰典物业管理有限公司", self.source)
         self.assertRegex(self.source, r'<meta\s+name="viewport"')
         self.assertRegex(self.source, r'<meta\s+name="description"')
         self.assertIn('name="theme-color"', self.source)
 
     def test_brand_and_core_messages_remain_primary(self):
-        self.assertRegex(self.source, r'<h1\s+class="hero-company">\s*泰典物业\s*</h1>')
-        for text in ["泰典物业", "住宅物业", "老旧社区", "性价比", "每一分投入"]:
+        self.assertRegex(
+            self.source,
+            r'<h1\s+class="hero-company">\s*武汉泰典物业管理有限公司\s*</h1>',
+        )
+        for text in [
+            "武汉泰典物业管理有限公司",
+            "泰典物业",
+            "2014年",
+            "住宅物业",
+            "老旧社区",
+            "性价比",
+            "每一分投入",
+        ]:
             self.assertIn(text, self.source)
         self.assertNotIn("XX物业", self.source)
         self.assertNotIn("XX PROPERTY", self.source)
+
+    def test_confirmed_company_identity_and_founding_year_are_used(self):
+        self.assertIn("武汉泰典物业管理有限公司成立于2014年", self.source)
+        self.assertRegex(
+            self.source,
+            r'<strong\s+class="experience-number">\s*2014\s*</strong>',
+        )
+        self.assertIn('<span class="experience-unit">年成立</span>', self.source)
+        self.assertNotIn("16<sup>+</sup>", self.source)
+        self.assertNotIn("示例数据，正式发布前核验", self.source)
 
     def test_semantic_sections_and_skip_link_exist(self):
         self.assertIn('class="skip-link"', self.source)
@@ -71,8 +92,8 @@ class ShowcaseAcceptanceTests(unittest.TestCase):
         self.assertIn("aria-hidden", self.source)
 
     def test_demo_data_is_disclosed_without_inventing_proof_metrics(self):
-        self.assertIn("示例数据，正式发布前核验", self.source)
         self.assertIn("待替换示例", self.source)
+        self.assertIn("演示信息", self.source)
         for fabricated_metric in ["98%", "99%", "24小时响应", "服务100+小区"]:
             self.assertNotIn(fabricated_metric, self.source)
 
