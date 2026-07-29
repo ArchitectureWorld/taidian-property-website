@@ -6,20 +6,66 @@
 
   const concept = root.dataset.concept || '';
   const themes = {
-    'community-life-network': { bg: '#ebe8e1', text: '#1d2020', kicker: '泰典物业 · 长期社区伙伴' },
-    'architectural-spatial-model': { bg: '#080c0d', text: '#f0ede6', kicker: '泰典物业 · 空间长期运营' },
-    'community-digital-layer': { bg: '#173c33', text: '#f4f1e9', kicker: '泰典物业 · 真实社区长期服务' },
+    'community-life-network': {
+      bg: '#ebe8e1',
+      text: '#1d2020',
+      muted: '#6f7471',
+      line: 'rgba(29,32,31,.18)',
+      kicker: '让科技进入管理，让服务回到生活。',
+    },
+    'architectural-spatial-model': {
+      bg: '#080c0d',
+      text: '#f0ede6',
+      muted: '#969b98',
+      line: 'rgba(240,237,230,.18)',
+      kicker: '空间有结构，服务才有长期价值。',
+    },
+    'community-digital-layer': {
+      bg: '#173c33',
+      text: '#f4f1e9',
+      muted: '#b7c4bd',
+      line: 'rgba(244,241,233,.20)',
+      kicker: '科技看见细节，服务守住日常。',
+    },
   };
   const theme = themes[concept] || themes['community-life-network'];
+
   root.style.setProperty('--finale-bg', theme.bg);
   root.style.setProperty('--finale-text', theme.text);
+  root.style.setProperty('--finale-muted', theme.muted);
+  root.style.setProperty('--finale-line', theme.line);
+  story.style.height = '780vh';
 
   const style = document.createElement('style');
   style.textContent = `
+    .viewport-stage{opacity:1!important;transform:none!important}
+    .after-story{display:none!important}
     .finale-layer{position:absolute!important;inset:0!important;z-index:90!important;overflow:hidden!important;pointer-events:none!important;background:transparent!important}
     .finale-layer .finale-media,.finale-layer .finale-solid,.finale-layer .finale-blend-field,.finale-layer .finale-title-wrap{display:none!important}
-    .finale-mask-canvas{position:absolute;inset:0;width:100%;height:100%}
-    .finale-kicker{position:absolute;z-index:2;bottom:clamp(40px,7vh,82px);left:50%;margin:0;transform:translateX(-50%);color:var(--finale-text);font-size:11px;letter-spacing:.18em;white-space:nowrap;opacity:0}
+    .finale-mask-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+    .finale-contact{position:absolute;z-index:3;left:clamp(24px,6vw,104px);right:clamp(24px,6vw,104px);bottom:clamp(32px,6vh,74px);display:grid;grid-template-columns:minmax(280px,1.2fr) minmax(520px,1fr);gap:clamp(36px,8vw,150px);align-items:end;color:var(--finale-text);opacity:0;transform:translate3d(0,36px,0);will-change:opacity,transform;pointer-events:none}
+    .finale-contact__lead{max-width:760px}
+    .finale-contact__eyebrow{margin:0 0 15px;color:var(--finale-muted);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+    .finale-contact__lead h2{margin:0;font-size:clamp(28px,3.5vw,58px);font-weight:520;line-height:1.12;letter-spacing:-.045em}
+    .finale-contact__grid{display:grid;grid-template-columns:repeat(2,minmax(170px,1fr));border-top:1px solid var(--finale-line);border-left:1px solid var(--finale-line)}
+    .finale-contact__item{min-height:86px;padding:16px 18px;border-right:1px solid var(--finale-line);border-bottom:1px solid var(--finale-line);display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+    .finale-contact__item small{color:var(--finale-muted);font-size:10px;letter-spacing:.12em}
+    .finale-contact__item strong{font-size:14px;font-weight:520;line-height:1.45}
+    .finale-contact__legal{grid-column:1/-1;min-height:74px}
+    @media(max-width:900px){
+      .finale-contact{grid-template-columns:1fr;gap:24px;bottom:30px}
+      .finale-contact__lead h2{font-size:clamp(26px,7vw,44px)}
+      .finale-contact__grid{grid-template-columns:1fr 1fr}
+      .finale-contact__item{min-height:72px;padding:12px 14px}
+    }
+    @media(max-width:560px){
+      .finale-contact{left:18px;right:18px;bottom:18px;gap:18px}
+      .finale-contact__lead h2{font-size:28px}
+      .finale-contact__eyebrow{margin-bottom:9px;font-size:9px}
+      .finale-contact__item{min-height:62px;padding:10px 11px}
+      .finale-contact__item small{font-size:8px}
+      .finale-contact__item strong{font-size:11px}
+    }
   `;
   document.head.appendChild(style);
 
@@ -30,19 +76,34 @@
     layer.className = 'finale-layer';
     stage.appendChild(layer);
   }
-  layer.innerHTML = '<canvas id="finaleMaskCanvas" class="finale-mask-canvas" aria-hidden="true"></canvas><p class="finale-kicker" aria-hidden="true"></p>';
+  layer.innerHTML = `
+    <canvas id="finaleMaskCanvas" class="finale-mask-canvas" aria-hidden="true"></canvas>
+    <section class="finale-contact" id="finaleContact" aria-label="泰典物业联系信息">
+      <div class="finale-contact__lead">
+        <p class="finale-contact__eyebrow">TAIDIAN PROPERTY · CONTACT</p>
+        <h2>${theme.kicker}</h2>
+      </div>
+      <div class="finale-contact__grid">
+        <div class="finale-contact__item"><small>项目合作</small><strong>业务电话待补充</strong></div>
+        <div class="finale-contact__item"><small>企业邮箱</small><strong>企业邮箱待补充</strong></div>
+        <div class="finale-contact__item"><small>办公地址</small><strong>武汉市 · 详细地址待补充</strong></div>
+        <div class="finale-contact__item"><small>服务方向</small><strong>住宅物业 · 老旧社区</strong></div>
+        <div class="finale-contact__item finale-contact__legal"><small>企业信息</small><strong>武汉泰典物业管理有限公司 · 成立于2014年</strong></div>
+      </div>
+    </section>
+  `;
 
   const canvas = layer.querySelector('#finaleMaskCanvas');
-  const kicker = layer.querySelector('.finale-kicker');
-  kicker.textContent = theme.kicker;
+  const contact = layer.querySelector('#finaleContact');
   const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
 
   const uiElements = [...document.querySelectorAll('.story-copy,.topbar,.statebar,.visual-meta,.visual-caption,.model-meta,.coordinates,.hud')];
   const geometryElements = [...document.querySelectorAll('.network-canvas,.orbit,#architecture-canvas,.wireframe-grid,#service-overlay,.scan-line')];
 
-  const finaleStart = 0.78;
-  const finaleEnd = 0.985;
-  const handoffStart = 0.997;
+  const finaleStart = 0.76;
+  const maskEnd = 0.91;
+  const contactStart = 0.90;
+  const contactEnd = 0.995;
   const text = '泰典物业';
   const maskFontSize = 128;
   const maskWidth = 900;
@@ -144,11 +205,9 @@
         bestIndex = index;
       }
     }
-    const x = bestIndex % maskWidth;
-    const y = Math.floor(bestIndex / maskWidth);
     return {
-      offsetX: x - maskWidth / 2,
-      offsetY: y - maskHeight / 2,
+      offsetX: bestIndex % maskWidth - maskWidth / 2,
+      offsetY: Math.floor(bestIndex / maskWidth) - maskHeight / 2,
       clearance: Math.max(1, bestDistance),
     };
   }
@@ -162,7 +221,7 @@
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    if (!interiorAnchor) interiorAnchor = findLargestInteriorAnchor();
+    interiorAnchor = findLargestInteriorAnchor();
 
     const storyRect = story.getBoundingClientRect();
     storyStart = scrollY + storyRect.top;
@@ -177,54 +236,61 @@
     ctx.clearRect(0, 0, width, height);
     for (const element of uiElements) element.style.opacity = '';
     for (const element of geometryElements) element.style.opacity = '';
-    kicker.style.opacity = '0';
-    kicker.setAttribute('aria-hidden', 'true');
-    stage.style.opacity = '';
+    contact.style.opacity = '0';
+    contact.style.transform = 'translate3d(0,36px,0)';
+    contact.setAttribute('aria-hidden', 'true');
   }
 
   function draw(progress) {
-    const local = clamp((progress - finaleStart) / (finaleEnd - finaleStart));
-    if (local <= 0.00001) {
+    if (progress <= finaleStart) {
       restoreStory();
       return;
     }
 
-    const reveal = smootherstep(clamp((local - 0.01) / 0.91));
+    const maskProgress = clamp((progress - finaleStart) / (maskEnd - finaleStart));
+    const contactProgress = clamp((progress - contactStart) / (contactEnd - contactStart));
+    const reveal = smootherstep(maskProgress);
+    const contactReveal = smootherstep(contactProgress);
+
     const baseFont = Math.min(width / 5.15, height * 0.255);
     const finalClearance = interiorAnchor.clearance * (baseFont / maskFontSize);
-    const startScale = clamp((Math.hypot(width, height) * 0.72) / Math.max(1, finalClearance), 48, 160);
-    const scale = Math.exp(lerp(Math.log(startScale), 0, reveal));
+    const startScale = Math.max(64, (Math.hypot(width, height) * 0.64) / Math.max(1, finalClearance));
+    const maskScale = Math.exp(lerp(Math.log(startScale), 0, reveal));
+    const contactScale = lerp(1, 0.78, contactReveal);
+    const scale = maskScale * contactScale;
     const fontSize = baseFont * scale;
     const tracking = -fontSize * 0.075;
-    const anchorScale = (baseFont / maskFontSize) * scale;
+    const anchorScale = (baseFont / maskFontSize) * maskScale;
     const anchorBlend = 1 - reveal;
-    const centerX = width / 2 - interiorAnchor.offsetX * anchorScale * anchorBlend;
-    const centerY = height / 2 - interiorAnchor.offsetY * anchorScale * anchorBlend;
+    const initialCenterX = width / 2 - interiorAnchor.offsetX * anchorScale * anchorBlend;
+    const initialCenterY = height / 2 - interiorAnchor.offsetY * anchorScale * anchorBlend;
+    const centerX = initialCenterX;
+    const centerY = lerp(initialCenterY, height * 0.265, contactReveal);
 
+    const overlayAlpha = smootherstep(clamp((maskProgress - 0.06) / 0.34));
     ctx.clearRect(0, 0, width, height);
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.globalAlpha = smootherstep(clamp(local / 0.035));
-    ctx.fillStyle = theme.bg;
-    ctx.fillRect(0, 0, width, height);
+    if (overlayAlpha > 0.0001) {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = overlayAlpha;
+      ctx.fillStyle = theme.bg;
+      ctx.fillRect(0, 0, width, height);
 
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = '#000';
-    drawTrackedText(ctx, centerX, centerY, fontSize, tracking);
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#000';
+      drawTrackedText(ctx, centerX, centerY, fontSize, tracking);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+    }
 
     layer.style.opacity = '1';
-    const storyFade = 1 - smootherstep(clamp((local - 0.08) / 0.34));
+    const storyFade = 1 - smootherstep(clamp((maskProgress - 0.03) / 0.32));
     for (const element of uiElements) element.style.opacity = String(storyFade);
     for (const element of geometryElements) element.style.opacity = String(storyFade);
 
-    const kickerOpacity = smootherstep(clamp((local - 0.86) / 0.12));
-    kicker.style.opacity = String(kickerOpacity);
-    kicker.setAttribute('aria-hidden', kickerOpacity < 0.5 ? 'true' : 'false');
-
-    const handoff = smootherstep(clamp((progress - handoffStart) / (1 - handoffStart)));
-    stage.style.opacity = String(1 - handoff);
+    contact.style.opacity = String(contactReveal);
+    contact.style.transform = `translate3d(0,${lerp(36, 0, contactReveal).toFixed(2)}px,0)`;
+    contact.setAttribute('aria-hidden', contactReveal < 0.5 ? 'true' : 'false');
   }
 
   function render(now) {
@@ -254,5 +320,6 @@
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', resize, { passive: true });
   new ResizeObserver(resize).observe(story);
-  resize();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
+  else resize();
 })();
