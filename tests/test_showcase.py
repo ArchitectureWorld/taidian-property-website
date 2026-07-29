@@ -25,6 +25,40 @@ class ScrollytellingAcceptanceTests(unittest.TestCase):
         self.assertRegex(self.source, r"<title>泰典物业｜滚动叙事")
         self.assertRegex(self.source, r'<meta name="description" content="[^"]*滚动叙事')
 
+    def test_full_viewport_stage_replaces_presentation_card(self):
+        self.assertIn('data-layout="full-viewport"', self.source)
+        self.assertIn('class="device viewport-stage"', self.source)
+        for token in [
+            "--stage-layout: full-viewport",
+            "width: 100%",
+            "height: 100svh",
+            "max-width: none",
+            "max-height: none",
+            "border-radius: 0",
+            "box-shadow: none",
+        ]:
+            self.assertIn(token, self.css)
+        for obsolete in [
+            "max-width: 1540px",
+            "max-height: 970px",
+            "border-radius: clamp(22px",
+            "box-shadow: 0 40px 100px",
+        ]:
+            self.assertNotIn(obsolete, self.css)
+        self.assertRegex(self.css, r"\.device-shell\s*\{[^}]*padding:\s*0;", re.S)
+        self.assertRegex(self.css, r"\.stage\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;", re.S)
+        self.assertRegex(self.css, r"\.copy-panel\s*\{[^}]*position:\s*absolute;", re.S)
+        visual_selector = {
+            "community-life-network": "visual-panel",
+            "architectural-wireframe": "model-panel",
+            "community-digital-overlay": "scene",
+        }[self.concept]
+        self.assertRegex(
+            self.css,
+            rf"\.{visual_selector}\s*\{{[^}}]*position:\s*absolute;[^}}]*inset:\s*0;",
+            re.S,
+        )
+
     def test_five_chapter_brand_story_exists(self):
         self.assertEqual(5, len(re.findall(r'data-copy-state="[0-4]"', self.source)))
         self.assertEqual(5, len(re.findall(r'class="state-tab(?: is-active)?"', self.source)))
@@ -41,6 +75,7 @@ class ScrollytellingAcceptanceTests(unittest.TestCase):
         for token in ["--handoff", ".after-story::before", "var(--handoff)", "handoffStart", "contentEnd"]:
             self.assertIn(token, self.css + self.script)
         self.assertIn("translate3d", self.css)
+        self.assertNotIn("scale(var(--shell-scale))", self.css)
 
     def test_concept_specific_visual_contract(self):
         contracts = {
@@ -64,6 +99,8 @@ class ScrollytellingAcceptanceTests(unittest.TestCase):
         documentation = CONCEPT_DOC.read_text(encoding="utf-8")
         self.assertIn("滚动叙事", documentation)
         self.assertIn("五章叙事", documentation)
+        self.assertIn("全视口", documentation)
+        self.assertIn("不存在外层展示背景", documentation)
 
     def test_deployment_files_remain_available(self):
         for filename in ["vercel.json", "README.md", "DATA_REQUIREMENTS.md", "DEPLOY_VERCEL.md"]:
