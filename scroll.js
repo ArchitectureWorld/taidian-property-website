@@ -1,5 +1,5 @@
 (() => {
-  const { clamp, lerp, damp, interpolateKeyframes, sequenceWeights, chapterData } = window.TaidianStoryMath;
+  const { clamp, lerp, damp, interpolateKeyframes, sequenceWeights, chapterData, smootherstep } = window.TaidianStoryMath;
   const story = document.getElementById('scrollStory');
   const canvas = document.getElementById('community-network');
   const context = canvas.getContext('2d', { alpha: true, desynchronized: true });
@@ -17,6 +17,7 @@
   const imageSequence = [0, 0, 1, 2, 3];
   const imageIntensity = [0.08, 0.28, 0.60, 0.34, 0.56];
   const particleCount = 82;
+  const openingRange = 0.18;
   const contentEnd = 0.84;
   const handoffStart = 0.88;
 
@@ -154,13 +155,28 @@
     root.style.setProperty('--shell-y', `${(-handoff * 18).toFixed(2)}px`);
   }
 
+  function applyOpeningState(progress) {
+    const opening = clamp(progress / openingRange);
+    const mask = smootherstep ? smootherstep(clamp((opening - 0.10) / 0.48)) : clamp((opening - 0.10) / 0.48);
+    const solid = smootherstep ? smootherstep(clamp((opening - 0.62) / 0.24)) : clamp((opening - 0.62) / 0.24);
+    const stage = 1 - (smootherstep ? smootherstep(clamp((opening - 0.78) / 0.18)) : clamp((opening - 0.78) / 0.18));
+    root.style.setProperty('--opening-overlay-opacity', (mask * (1 - solid * 0.1)).toFixed(4));
+    root.style.setProperty('--opening-fill-opacity', (mask * (1 - solid)).toFixed(4));
+    root.style.setProperty('--opening-solid-opacity', solid.toFixed(4));
+    root.style.setProperty('--opening-word-scale', (1.48 - mask * 0.58).toFixed(4));
+    root.style.setProperty('--opening-stage-opacity', stage.toFixed(4));
+    root.style.setProperty('--story-copy-opacity', clamp((progress - openingRange * 0.66) / (openingRange * 0.34)).toFixed(4));
+    root.style.setProperty('--story-ui-opacity', clamp((progress - openingRange * 0.72) / (openingRange * 0.28)).toFixed(4));
+  }
+
   function renderFrame(now) {
     const delta = lastFrameTime ? Math.min(.05, Math.max(.001,(now-lastFrameTime)/1000)) : 1/60;
     lastFrameTime = now;
     if (reducedMotion) { displayProgress=targetProgress; pointerX=pointerTargetX; pointerY=pointerTargetY; }
     else { displayProgress=damp(displayProgress,targetProgress,17,delta); pointerX=damp(pointerX,pointerTargetX,12,delta); pointerY=damp(pointerY,pointerTargetY,12,delta); }
-    const contentProgress=clamp(displayProgress/contentEnd);
-    const handoff=window.TaidianStoryMath.smootherstep(clamp((displayProgress-handoffStart)/(1-handoffStart)));
+    const contentProgress = clamp((displayProgress - openingRange) / (contentEnd - openingRange));
+    const handoff = window.TaidianStoryMath.smootherstep(clamp((displayProgress-handoffStart)/(1-handoffStart)));
+    applyOpeningState(displayProgress);
     applyImageState(contentProgress);
     drawNetwork(contentProgress);
     updateGlobalVisuals(displayProgress,handoff);
@@ -173,7 +189,7 @@
   function resizeCanvas(){ const rect=canvas.getBoundingClientRect(); const limit=innerWidth<=720?1.25:1.5; ratio=Math.min(devicePixelRatio||1,limit); width=Math.max(1,rect.width); height=Math.max(1,rect.height); canvas.width=Math.round(width*ratio); canvas.height=Math.round(height*ratio); context.setTransform(ratio,0,0,ratio,0,0); }
   function measure(){ measureFrame=0; const rect=story.getBoundingClientRect(); storyStart=scrollY+rect.top; storyDistance=Math.max(1,story.offsetHeight-innerHeight); resizeCanvas(); updateTargetFromScroll(); if (!displayProgress) displayProgress=targetProgress; scheduleRender(); }
   function scheduleMeasure(){ if(measureFrame) return; measureFrame=requestAnimationFrame(measure); }
-  function scrollToState(index){ const normalized=clamp(index/4)*contentEnd; scrollTo({top:storyStart+storyDistance*normalized,behavior:reducedMotion?'auto':'smooth'}); }
+  function scrollToState(index){ const normalized=openingRange+clamp(index/4)*(contentEnd-openingRange); scrollTo({top:storyStart+storyDistance*normalized,behavior:reducedMotion?'auto':'smooth'}); }
 
   tabs.forEach((button)=>button.addEventListener('click',()=>scrollToState(Number(button.dataset.state))));
   topButtons.forEach((button)=>button.addEventListener('click',()=>scrollToState(Number(button.dataset.state))));
