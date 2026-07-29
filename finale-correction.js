@@ -11,6 +11,7 @@
       text: '#1d2020',
       muted: '#6f7471',
       line: 'rgba(29,32,31,.18)',
+      gold: '#b67b24',
       kicker: '让科技进入管理，让服务回到生活。',
     },
     'architectural-spatial-model': {
@@ -18,6 +19,7 @@
       text: '#f0ede6',
       muted: '#969b98',
       line: 'rgba(240,237,230,.18)',
+      gold: '#d5ad67',
       kicker: '空间有结构，服务才有长期价值。',
     },
     'community-digital-layer': {
@@ -25,6 +27,7 @@
       text: '#f4f1e9',
       muted: '#b7c4bd',
       line: 'rgba(244,241,233,.20)',
+      gold: '#d2a45b',
       kicker: '科技看见细节，服务守住日常。',
     },
   };
@@ -251,6 +254,7 @@
     const contactProgress = clamp((progress - contactStart) / (contactEnd - contactStart));
     const reveal = smootherstep(maskProgress);
     const contactReveal = smootherstep(contactProgress);
+    const goldReveal = smootherstep(clamp((contactProgress - 0.02) / 0.55));
 
     const baseFont = Math.min(width / 5.15, height * 0.255);
     const finalClearance = interiorAnchor.clearance * (baseFont / maskFontSize);
@@ -279,6 +283,14 @@
       ctx.globalAlpha = 1;
       ctx.fillStyle = '#000';
       drawTrackedText(ctx, centerX, centerY, fontSize, tracking);
+
+      if (goldReveal > 0.0001) {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = goldReveal;
+        ctx.fillStyle = theme.gold;
+        drawTrackedText(ctx, centerX, centerY, fontSize, tracking);
+      }
+
       ctx.globalCompositeOperation = 'source-over';
       ctx.globalAlpha = 1;
     }
