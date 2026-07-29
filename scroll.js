@@ -4,7 +4,6 @@
   const scene=document.getElementById('scene');
   const canvas=document.getElementById('service-overlay');
   const context=canvas.getContext('2d',{alpha:true,desynchronized:true});
-  const scanLine=document.getElementById('scanLine');
   const copyStates=[...document.querySelectorAll('[data-copy-state]')];
   const tabs=[...document.querySelectorAll('.state-tab')];
   const topButtons=[...document.querySelectorAll('.topnav [data-state]')];
@@ -21,32 +20,39 @@
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const imageSequence=[0,0,1,2,3];
   const imageIntensity=[.82,.90,.92,.88,.95];
-  const openingRange=.18, contentEnd=.84, handoffStart=.88;
+  const contentEnd=.78, finaleStart=.80, finaleEnd=.985, handoffStart=.992;
   let width=1,height=1,ratio=1,storyStart=0,storyDistance=1,targetProgress=0,displayProgress=0;
   let pointerTargetX=0,pointerTargetY=0,pointerX=0,pointerY=0,animationFrame=0,measureFrame=0,lastFrameTime=0,activeState=-1;
   const createGlow=()=>{const sprite=document.createElement('canvas');sprite.width=48;sprite.height=48;const ctx=sprite.getContext('2d'),g=ctx.createRadialGradient(24,24,0,24,24,24);g.addColorStop(0,'rgba(246,194,111,.9)');g.addColorStop(.25,'rgba(246,194,111,.28)');g.addColorStop(1,'rgba(246,194,111,0)');ctx.fillStyle=g;ctx.fillRect(0,0,48,48);return sprite};
   const glow=createGlow();
   function applyImageState(progress){const imageWeights=sequenceWeights(progress,imageSequence,4),intensity=interpolateKeyframes(progress,imageIntensity);imageWeights.forEach((weight,index)=>{root.style.setProperty(`--image-${index}-opacity`,(weight*intensity).toFixed(4));root.style.setProperty(`--image-${index}-x`,`${((index-1.5)*5+progress*(index%2?-7:9)+pointerX*-4).toFixed(2)}px`);root.style.setProperty(`--image-${index}-scale`,(1.035+progress*.045+index*.004).toFixed(4))})}
-  function updateCopy(state){const{from,to,mix}=state;copyStates.forEach(el=>{el.style.opacity='0';el.style.transform='translate3d(0,20px,0)'});const blend=from===to?0:smootherstep(clamp((mix-.3)/.4));copyStates[from].style.opacity=(1-blend).toFixed(3);copyStates[from].style.transform=`translate3d(0,${(-14*blend).toFixed(2)}px,0)`;if(to!==from){copyStates[to].style.opacity=blend.toFixed(3);copyStates[to].style.transform=`translate3d(0,${(18*(1-blend)).toFixed(2)}px,0)`}const next=blend<.5?from:to;if(next!==activeState){activeState=next;code.textContent=`${String(activeState+1).padStart(3,'0')} / 005`;modelLabel.textContent=labels[activeState];nextButton.innerHTML=activeState===4?'进入合作 <span>↓</span>':'继续滚动 <span>↓</span>';[...tabs,...topButtons].forEach(btn=>{const active=Number(btn.dataset.state)===activeState;btn.classList.toggle('is-active',active);btn.setAttribute('aria-current',active?'step':'false')});copyStates.forEach((el,i)=>el.setAttribute('aria-hidden',i===activeState?'false':'true'))}}
+  function updateCopy(state){const{from,to,mix}=state;copyStates.forEach(el=>{el.style.opacity='0';el.style.transform='translate3d(0,20px,0)'});const blend=from===to?0:smootherstep(clamp((mix-.3)/.4));copyStates[from].style.opacity=(1-blend).toFixed(3);copyStates[from].style.transform=`translate3d(0,${(-14*blend).toFixed(2)}px,0)`;if(to!==from){copyStates[to].style.opacity=blend.toFixed(3);copyStates[to].style.transform=`translate3d(0,${(18*(1-blend)).toFixed(2)}px,0)`}const next=blend<.5?from:to;if(next!==activeState){activeState=next;code.textContent=`${String(activeState+1).padStart(3,'0')} / 005`;modelLabel.textContent=labels[activeState];nextButton.innerHTML=activeState===4?'进入品牌收束 <span>↓</span>':'继续滚动 <span>↓</span>';[...tabs,...topButtons].forEach(btn=>{const active=Number(btn.dataset.state)===activeState;btn.classList.toggle('is-active',active);btn.setAttribute('aria-current',active?'step':'false')});copyStates.forEach((el,i)=>el.setAttribute('aria-hidden',i===activeState?'false':'true'))}}
   function draw(progress){const state=chapterData(progress,5),focusA=focusSets[state.from],focusB=focusSets[state.to];context.clearRect(0,0,width,height);const points=positions[state.from].map((p,i)=>({x:lerp(p[0],positions[state.to][i][0],state.mix)*width+pointerX*8*(p[0]-.5),y:lerp(p[1],positions[state.to][i][1],state.mix)*height+pointerY*5*(p[1]-.5)}));edges.forEach(([a,b],index)=>{const pa=points[a],pb=points[b],weight=lerp(focusA.has(a)||focusA.has(b)?1:0,focusB.has(a)||focusB.has(b)?1:0,state.mix);context.strokeStyle=`rgba(230,238,233,${.05+weight*.14})`;context.lineWidth=.45+weight*.28;context.beginPath();context.moveTo(pa.x,pa.y);context.lineTo(pb.x,pb.y);context.stroke();if(weight>.35){const flow=(progress*4.1+index*.13)%1,x=lerp(pa.x,pb.x,flow),y=lerp(pa.y,pb.y,flow);context.globalAlpha=.16+weight*.22;context.drawImage(glow,x-12,y-12,24,24);context.globalAlpha=1}});points.forEach((p,i)=>{const weight=lerp(focusA.has(i)?1:0,focusB.has(i)?1:0,state.mix);if(weight>.26){context.globalAlpha=weight*.20;context.drawImage(glow,p.x-14,p.y-14,28,28);context.globalAlpha=1}context.fillStyle=weight>.35?'rgba(246,198,119,.72)':'rgba(225,235,229,.38)';context.beginPath();context.arc(p.x,p.y,1.4+weight*1.4,0,Math.PI*2);context.fill();context.strokeStyle=`rgba(236,242,238,${.16+weight*.38})`;context.lineWidth=.55;context.beginPath();context.arc(p.x,p.y,4.5+weight*2.8,0,Math.PI*2);context.stroke()});root.style.setProperty('--scan-x',`${(progress*width).toFixed(2)}px`);updateCopy(state);progressFill.style.transform=`scaleX(${progress.toFixed(5)})`}
-  function applyOpeningState(progress) {
-    const opening = clamp(progress / openingRange);
-    const mask = smootherstep ? smootherstep(clamp((opening - 0.10) / 0.48)) : clamp((opening - 0.10) / 0.48);
-    const solid = smootherstep ? smootherstep(clamp((opening - 0.62) / 0.24)) : clamp((opening - 0.62) / 0.24);
-    const stage = 1 - (smootherstep ? smootherstep(clamp((opening - 0.78) / 0.18)) : clamp((opening - 0.78) / 0.18));
-    root.style.setProperty('--opening-overlay-opacity', (mask * (1 - solid * 0.1)).toFixed(4));
-    root.style.setProperty('--opening-fill-opacity', (mask * (1 - solid)).toFixed(4));
-    root.style.setProperty('--opening-solid-opacity', solid.toFixed(4));
-    root.style.setProperty('--opening-word-scale', (1.48 - mask * 0.58).toFixed(4));
-    root.style.setProperty('--opening-stage-opacity', stage.toFixed(4));
-    root.style.setProperty('--story-copy-opacity', clamp((progress - openingRange * 0.66) / (openingRange * 0.34)).toFixed(4));
-    root.style.setProperty('--story-ui-opacity', clamp((progress - openingRange * 0.72) / (openingRange * 0.28)).toFixed(4));
+  function applyFinaleState(rawProgress) {
+    const progress=clamp((rawProgress-finaleStart)/(finaleEnd-finaleStart));
+    const enter=smootherstep(clamp(progress/.08));
+    const reveal=smootherstep(clamp((progress-.02)/.78));
+    const fieldFade=1-smootherstep(clamp((progress-.05)/.30));
+    const blendIn=smootherstep(clamp((progress-.10)/.38));
+    const solid=smootherstep(clamp((progress-.76)/.22));
+    const scale=lerp(32,1,reveal);
+    const storyFade=1-smootherstep(clamp((progress-.02)/.20));
+    root.style.setProperty('--finale-opacity',enter.toFixed(4));
+    root.style.setProperty('--finale-word-scale',scale.toFixed(4));
+    root.style.setProperty('--finale-field-opacity',(enter*fieldFade).toFixed(4));
+    root.style.setProperty('--finale-blend-opacity',(enter*blendIn*(1-solid)).toFixed(4));
+    root.style.setProperty('--finale-solid-opacity',solid.toFixed(4));
+    root.style.setProperty('--finale-solid-text-opacity',solid.toFixed(4));
+    root.style.setProperty('--finale-media-opacity',(1-solid).toFixed(4));
+    root.style.setProperty('--finale-kicker-opacity',smootherstep(clamp((progress-.82)/.16)).toFixed(4));
+    root.style.setProperty('--story-copy-opacity',storyFade.toFixed(4));
+    root.style.setProperty('--story-ui-opacity',storyFade.toFixed(4));
+    root.style.setProperty('--geometry-opacity',storyFade.toFixed(4));
   }
-
-  function renderFrame(now){const delta=lastFrameTime?Math.min(.05,Math.max(.001,(now-lastFrameTime)/1000)):1/60;lastFrameTime=now;if(reducedMotion){displayProgress=targetProgress;pointerX=pointerTargetX;pointerY=pointerTargetY}else{displayProgress=damp(displayProgress,targetProgress,17,delta);pointerX=damp(pointerX,pointerTargetX,12,delta);pointerY=damp(pointerY,pointerTargetY,12,delta)}const content=clamp((displayProgress-openingRange)/(contentEnd-openingRange)),handoff=smootherstep(clamp((displayProgress-handoffStart)/(1-handoffStart)));applyOpeningState(displayProgress);applyImageState(content);draw(content);root.style.setProperty('--handoff',handoff.toFixed(5));root.style.setProperty('--shell-y',`${(-handoff*18).toFixed(2)}px`);const moving=Math.abs(displayProgress-targetProgress)>.00012||Math.abs(pointerX-pointerTargetX)>.0005||Math.abs(pointerY-pointerTargetY)>.0005;if(moving)animationFrame=requestAnimationFrame(renderFrame);else{displayProgress=targetProgress;animationFrame=0}}
+  function renderFrame(now){const delta=lastFrameTime?Math.min(.05,Math.max(.001,(now-lastFrameTime)/1000)):1/60;lastFrameTime=now;if(reducedMotion){displayProgress=targetProgress;pointerX=pointerTargetX;pointerY=pointerTargetY}else{displayProgress=damp(displayProgress,targetProgress,17,delta);pointerX=damp(pointerX,pointerTargetX,12,delta);pointerY=damp(pointerY,pointerTargetY,12,delta)}const content=clamp(displayProgress/contentEnd),handoff=smootherstep(clamp((displayProgress-handoffStart)/(1-handoffStart)));applyFinaleState(displayProgress);applyImageState(content);draw(content);root.style.setProperty('--handoff',handoff.toFixed(5));root.style.setProperty('--shell-y',`${(-handoff*18).toFixed(2)}px`);const moving=Math.abs(displayProgress-targetProgress)>.00012||Math.abs(pointerX-pointerTargetX)>.0005||Math.abs(pointerY-pointerTargetY)>.0005;if(moving)animationFrame=requestAnimationFrame(renderFrame);else{displayProgress=targetProgress;animationFrame=0}}
   function scheduleRender(){if(animationFrame)return;lastFrameTime=performance.now();animationFrame=requestAnimationFrame(renderFrame)}function updateTargetFromScroll(){targetProgress=clamp((scrollY-storyStart)/storyDistance)}function onScroll(){updateTargetFromScroll();scheduleRender()}
   function resizeCanvas(){const rect=canvas.getBoundingClientRect(),limit=innerWidth<=720?1.2:1.4;ratio=Math.min(devicePixelRatio||1,limit);width=Math.max(1,rect.width);height=Math.max(1,rect.height);canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);context.setTransform(ratio,0,0,ratio,0,0)}
   function measure(){measureFrame=0;const rect=story.getBoundingClientRect();storyStart=scrollY+rect.top;storyDistance=Math.max(1,story.offsetHeight-innerHeight);resizeCanvas();updateTargetFromScroll();if(!displayProgress)displayProgress=targetProgress;scheduleRender()}function scheduleMeasure(){if(measureFrame)return;measureFrame=requestAnimationFrame(measure)}
-  function scrollToState(index){const normalized=openingRange+clamp(index/4)*(contentEnd-openingRange);scrollTo({top:storyStart+storyDistance*normalized,behavior:reducedMotion?'auto':'smooth'})}
-  tabs.forEach(btn=>btn.addEventListener('click',()=>scrollToState(Number(btn.dataset.state))));topButtons.forEach(btn=>btn.addEventListener('click',()=>scrollToState(Number(btn.dataset.state))));nextButton.addEventListener('click',()=>activeState<4?scrollToState(activeState+1):scrollTo({top:storyStart+storyDistance,behavior:reducedMotion?'auto':'smooth'}));scene.addEventListener('pointermove',e=>{const rect=scene.getBoundingClientRect();pointerTargetX=((e.clientX-rect.left)/rect.width-.5)*2;pointerTargetY=((e.clientY-rect.top)/rect.height-.5)*2;scheduleRender()});scene.addEventListener('pointerleave',()=>{pointerTargetX=0;pointerTargetY=0;scheduleRender()});addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',scheduleMeasure,{passive:true});new ResizeObserver(scheduleMeasure).observe(story);measure();
+  function scrollToState(index){const normalized=clamp(index/4)*contentEnd;scrollTo({top:storyStart+storyDistance*normalized,behavior:reducedMotion?'auto':'smooth'})}
+  tabs.forEach(btn=>btn.addEventListener('click',()=>scrollToState(Number(btn.dataset.state))));topButtons.forEach(btn=>btn.addEventListener('click',()=>scrollToState(Number(btn.dataset.state))));nextButton.addEventListener('click',()=>activeState<4?scrollToState(activeState+1):scrollTo({top:storyStart+storyDistance*(finaleStart+(finaleEnd-finaleStart)*.72),behavior:reducedMotion?'auto':'smooth'}));scene.addEventListener('pointermove',e=>{const rect=scene.getBoundingClientRect();pointerTargetX=((e.clientX-rect.left)/rect.width-.5)*2;pointerTargetY=((e.clientY-rect.top)/rect.height-.5)*2;scheduleRender()});scene.addEventListener('pointerleave',()=>{pointerTargetX=0;pointerTargetY=0;scheduleRender()});addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',scheduleMeasure,{passive:true});new ResizeObserver(scheduleMeasure).observe(story);measure();
 })();
